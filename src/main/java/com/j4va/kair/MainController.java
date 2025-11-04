@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 
 
 
-public class SystemController {
+public class MainController {
     @FXML private HBox topBar;
     public void initialize() {
         TopBar.initializeTopBar(topBar);
