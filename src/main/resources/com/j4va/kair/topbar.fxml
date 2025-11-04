@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<HBox fx:id="topBar"
+      xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER_LEFT"
+      prefHeight="36.0"
+      styleClass="top-bar"
+      stylesheets="@topbar.css">
+
+    <!-- App Title -->
+    <Label fx:id="titleLabel" text="KAIR"/>
+
+    <!-- Spacer to push window buttons to the right -->
+    <Region HBox.hgrow="ALWAYS" />
+
+    <!-- Window control buttons -->
+    <Region HBox.hgrow="ALWAYS"/>
+    <Label fx:id="minimizeBtn" text="—"/>
+    <Label fx:id="maximizeBtn" text="⬜"/>
+    <Label fx:id="closeBtn" text="✕"/>
+
+</HBox>
+
