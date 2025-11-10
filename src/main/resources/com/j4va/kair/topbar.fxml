@@ -3,12 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<HBox fx:id="topBar"
-      xmlns:fx="http://javafx.com/fxml"
-      alignment="CENTER_LEFT"
-      prefHeight="36.0"
-      styleClass="top-bar"
-      stylesheets="@topbar.css">
+<HBox fx:id="topBar" xmlns:fx="http://javafx.com/fxml" alignment="CENTER_LEFT" prefHeight="36.0" stylesheets="@topbar.css">
 
     <!-- App Title -->
     <Label fx:id="titleLabel" text="KAIR"/>

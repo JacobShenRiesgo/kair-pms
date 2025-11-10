@@ -10,5 +10,6 @@ public class MainController {
     @FXML private HBox topBar;
     public void initialize() {
         TopBar.initializeTopBar(topBar);
+
     }
 }
