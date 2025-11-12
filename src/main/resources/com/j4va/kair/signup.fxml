@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.SignupController">
+    <top>
+        <fx:include fx:id="topBar" source="topbar.fxml" />
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background-color: #f4f5f7;">
+            <VBox alignment="CENTER" spacing="0" style="-fx-background-color: #f4f5f7; -fx-min-height: 600px;">
+                <VBox alignment="CENTER" prefWidth="400" maxWidth="400" minWidth="400" spacing="12" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                    <VBox.margin>
+                        <Insets top="30" bottom="30" left="40" right="40" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets bottom="25" left="35" right="35" top="25" />
+                    </padding>
+
+                    <!-- Logo -->
+                    <HBox alignment="CENTER">
+                        <Label text="▲ ATLASSIAN" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0052cc;" />
+                    </HBox>
+
+                    <!-- Title -->
+                    <Label text="Sign up to continue" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+
+                    <!-- Email Section -->
+                    <VBox spacing="6">
+                        <Label text="Enter email address" style="-fx-font-size: 14px; -fx-text-fill: #172b4d; -fx-font-weight: normal;" />
+                        <TextField fx:id="emailField" promptText="Enter your email" style="-fx-border-color: #ddd; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 8px; -fx-font-size: 14px;" />
+                    </VBox>
+
+                    <!-- Terms and Privacy - More compact -->
+                    <VBox spacing="3" alignment="CENTER">
+                        <VBox.margin>
+                            <Insets top="5" bottom="5" />
+                        </VBox.margin>
+                        <Label text="By signing up, I accept the Atlassian Cloud Terms of" style="-fx-font-size: 11px; -fx-text-fill: #6b778c;" />
+                        <HBox alignment="CENTER" spacing="3">
+                            <Label text="Service" style="-fx-font-size: 11px; -fx-text-fill: #0052cc; -fx-underline: true;" />
+                            <Label text="and acknowledge the" style="-fx-font-size: 11px; -fx-text-fill: #6b778c;" />
+                            <Label text="Privacy Policy" style="-fx-font-size: 11px; -fx-text-fill: #0052cc; -fx-underline: true;" />
+                            <Label text="." style="-fx-font-size: 11px; -fx-text-fill: #6b778c;" />
+                        </HBox>
+                    </VBox>
+
+                    <!-- Sign Up Button -->
+                    <Button fx:id="signUpButton" maxWidth="Infinity" onAction="#handleSignUp" text="Sign up" style="-fx-background-color: #0052cc; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 10px; -fx-font-size: 14px;" />
+
+                    <!-- Separator -->
+                    <Label text="Or continue with:" style="-fx-font-size: 14px; -fx-text-fill: #6b778c; -fx-alignment: center;" />
+
+                    <!-- Social Login Buttons - Reduced spacing -->
+                    <VBox spacing="8">
+                        <Button fx:id="googleButton" maxWidth="Infinity" onAction="#handleGoogleSignup" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 8px; -fx-font-size: 13px;">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="G" style="-fx-font-weight: bold; -fx-text-fill: #4285f4; -fx-font-size: 14px;" />
+                                    <Label text="Google" />
+                                </HBox>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="microsoftButton" maxWidth="Infinity" onAction="#handleMicrosoftSignup" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 8px; -fx-font-size: 13px;">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="⊞" style="-fx-font-weight: bold; -fx-text-fill: #00a1f1; -fx-font-size: 14px;" />
+                                    <Label text="Microsoft" />
+                                </HBox>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="appleButton" maxWidth="Infinity" onAction="#handleAppleSignup" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 8px; -fx-font-size: 13px;">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="🍎" style="-fx-font-weight: bold; -fx-text-fill: #000000; -fx-font-size: 14px;" />
+                                    <Label text="Apple" />
+                                </HBox>
+                            </graphic>
+                        </Button>
+
+                        <Button fx:id="slackButton" maxWidth="Infinity" onAction="#handleSlackSignup" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-padding: 8px; -fx-font-size: 13px;">
+                            <graphic>
+                                <HBox alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="⚡" style="-fx-font-weight: bold; -fx-text-fill: #4a154b; -fx-font-size: 14px;" />
+                                    <Label text="Slack" />
+                                </HBox>
+                            </graphic>
+                        </Button>
+                    </VBox>
+
+                    <!-- Footer Links -->
+                    <HBox alignment="CENTER" spacing="5">
+                        <Label text="Already have an Atlassian account?" style="-fx-font-size: 13px; -fx-text-fill: #6b778c;" />
+                        <Label text="Log in" style="-fx-font-size: 13px; -fx-text-fill: #0052cc; -fx-underline: true;" onMouseClicked="#handleBackToLogin" />
+                    </HBox>
+
+                    <!-- Bottom Logo -->
+                    <VBox alignment="CENTER" spacing="2">
+                        <VBox.margin>
+                            <Insets top="15" />
+                        </VBox.margin>
+                        <Label text="▲ ATLASSIAN" style="-fx-font-size: 11px; -fx-text-fill: #6b778c;" />
+                        <Label text="One account for Jira, Confluence, Trello and more." style="-fx-font-size: 9px; -fx-text-fill: #6b778c; -fx-alignment: center;" />
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

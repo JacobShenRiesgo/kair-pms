@@ -8,11 +8,59 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainApplication extends Application {
+
+    private static Stage primaryStage;
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        TopBar.setupTransparentStage(stage, scene, "Kair");
+        primaryStage = stage;
+
+        // appears when you launch the project
+        showLoginScreen();
+
+        stage.setTitle("KAIR - Project Management System");
+        stage.setResizable(true);
+        stage.setMinWidth(600);
+        stage.setMinHeight(500);
         stage.show();
+    }
+
+    public static void showLoginScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
+        primaryStage.setScene(scene);
+    }
+
+    public static void showMainScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        primaryStage.setScene(scene);
+    }
+
+    public static void showSignupScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("signup.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
+        primaryStage.setScene(scene);
+    }
+
+    public static void showPasswordScreen(String email) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("password.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
+
+        // Get the controller and set the email after FXML is loaded
+        PasswordController controller = fxmlLoader.getController();
+        if (controller != null) {
+            controller.setUserEmail(email);
+        }
+
+        primaryStage.setScene(scene);
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 }

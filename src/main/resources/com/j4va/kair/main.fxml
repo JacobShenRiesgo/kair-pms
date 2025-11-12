@@ -1,48 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
-<BorderPane prefHeight="464.0" prefWidth="871.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.MainController">
     <top>
         <fx:include fx:id="topBar" source="topbar.fxml" />
     </top>
-   <center>
-      <HBox fx:id="kanban" prefHeight="418.0" prefWidth="616.0" spacing="10.0">
-          <VBox>
-              <Label text="To Do" VBox.vgrow="ALWAYS" />
-              <StackPane>
-                  <ListView fx:id="toDoList" />
-                  <Button fx:id="toDoButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                  <StackPane.margin>
-                     <Insets bottom="5.0" left="3.0" right="3.0" />
-                  </StackPane.margin></Button>
-              </StackPane>
-          </VBox>
-          <VBox>
-              <Label text="In progress" VBox.vgrow="ALWAYS" />
-              <StackPane>
-                  <ListView fx:id="inProgressList" />
-                  <Button fx:id="inProgressButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                      <StackPane.margin>
-                          <Insets bottom="5.0" left="3.0" right="3.0" />
-                      </StackPane.margin></Button>
-              </StackPane>
-          </VBox>
-          <VBox>
-              <Label text="Done" VBox.vgrow="ALWAYS" />
-              <StackPane>
-              <ListView fx:id="doneList" />
-              <Button fx:id="doneButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                  <StackPane.margin>
-                      <Insets bottom="5.0" left="3.0" right="3.0" />
-                  </StackPane.margin></Button>
-              </StackPane>
-          </VBox>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-      </HBox>
-   </center>
+    <center>
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f4f5f7; -fx-padding: 40px;">
+
+            <!-- Welcome Section -->
+            <VBox alignment="CENTER" spacing="15" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 30px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+
+                <Label text="Welcome to KAIR Project Management" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+                <Label text="Your project management dashboard" style="-fx-font-size: 16px; -fx-text-fill: #6b778c;" />
+
+                <!-- Quick Actions -->
+                <HBox spacing="20" alignment="CENTER">
+                    <VBox.margin>
+                        <Insets top="20" />
+                    </VBox.margin>
+
+                    <Button text="Create Project" style="-fx-background-color: #0052cc; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" />
+                    <Button text="View Projects" style="-fx-background-color: white; -fx-border-color: #0052cc; -fx-text-fill: #0052cc; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" />
+                    <Button text="Team Dashboard" style="-fx-background-color: white; -fx-border-color: #0052cc; -fx-text-fill: #0052cc; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" />
+                </HBox>
+
+            </VBox>
+
+            <!-- Main Content Tabs -->
+            <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-background-radius: 8px;">
+
+                <Tab text="Dashboard">
+                    <VBox spacing="15" style="-fx-padding: 20px;">
+                        <Label text="Project Dashboard" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+
+                        <!-- Project Cards -->
+                        <HBox spacing="15">
+                            <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
+                                <Label text="Active Projects" style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" />
+                                <Label text="12" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0052cc;" />
+                            </VBox>
+
+                            <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
+                                <Label text="Completed Tasks" style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" />
+                                <Label text="847" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #28a745;" />
+                            </VBox>
+
+                            <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
+                                <Label text="Team Members" style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" />
+                                <Label text="23" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #fd7e14;" />
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </Tab>
+
+                <Tab text="Projects">
+                    <VBox spacing="15" style="-fx-padding: 20px;">
+                        <Label text="Project Management" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+                        <Label text="Manage your projects and tasks efficiently." style="-fx-font-size: 14px; -fx-text-fill: #6b778c;" />
+                    </VBox>
+                </Tab>
+
+                <Tab text="Issues">
+                    <VBox spacing="15" style="-fx-padding: 20px;">
+                        <Label text="Issue Tracking" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+                        <Label text="Track and resolve project issues." style="-fx-font-size: 14px; -fx-text-fill: #6b778c;" />
+                    </VBox>
+                </Tab>
+
+                <Tab text="Reports">
+                    <VBox spacing="15" style="-fx-padding: 20px;">
+                        <Label text="Project Reports" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" />
+                        <Label text="View detailed project analytics and reports." style="-fx-font-size: 14px; -fx-text-fill: #6b778c;" />
+                    </VBox>
+                </Tab>
+
+            </TabPane>
+
+        </VBox>
+    </center>
 </BorderPane>
