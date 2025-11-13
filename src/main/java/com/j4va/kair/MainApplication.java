@@ -17,8 +17,6 @@ public class MainApplication extends Application {
 
         // appears when you launch the project
         showLoginScreen();
-
-        stage.setTitle("KAIR - Project Management System");
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();
@@ -28,18 +26,21 @@ public class MainApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
         primaryStage.setScene(scene);
+        TopBar.setupTransparentStage(primaryStage, scene);
     }
 
     public static void showMainScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         primaryStage.setScene(scene);
+        TopBar.setupTransparentStage(primaryStage, scene);
     }
 
     public static void showSignupScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("signup.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
         primaryStage.setScene(scene);
+        TopBar.setupTransparentStage(primaryStage, scene);
     }
 
     public static void showPasswordScreen(String email) throws IOException {
@@ -53,6 +54,7 @@ public class MainApplication extends Application {
         }
 
         primaryStage.setScene(scene);
+        TopBar.setupTransparentStage(primaryStage, scene);
     }
 
     public static Stage getPrimaryStage() {
