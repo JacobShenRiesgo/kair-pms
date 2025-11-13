@@ -12,7 +12,7 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        TopBar.setupTransparentStage(stage, scene, "Kair");
+        TopBar.setupTransparentStage(stage, scene);
         stage.show();
     }
 }

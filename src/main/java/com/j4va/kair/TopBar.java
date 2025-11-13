@@ -16,11 +16,10 @@ import javafx.stage.StageStyle;
 public class TopBar{
     private static double xOffset = 0;
     private static double yOffset = 0;
-    public static void setupTransparentStage(Stage stage, Scene scene, String title) {
+    public static void setupTransparentStage(Stage stage, Scene scene) {
         scene.setFill(Color.TRANSPARENT);
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
-        stage.setTitle(title);
         Node root = scene.getRoot();
         Rectangle clip = new Rectangle();
         clip.setArcWidth(20);
