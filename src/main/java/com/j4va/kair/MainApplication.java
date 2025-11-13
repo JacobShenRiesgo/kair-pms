@@ -25,8 +25,10 @@ public class MainApplication extends Application {
     public static void showLoginScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
+        primaryStage.setScene(scene);
+
+
     }
 
     public static void showMainScreen() throws IOException {
@@ -41,6 +43,7 @@ public class MainApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
         primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
+        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
     public static void showPasswordScreen(String email) throws IOException {
@@ -52,9 +55,9 @@ public class MainApplication extends Application {
         if (controller != null) {
             controller.setUserEmail(email);
         }
-
-        primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
+        primaryStage.setScene(scene);
+
     }
 
     public static Stage getPrimaryStage() {
