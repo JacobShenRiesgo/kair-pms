@@ -10,7 +10,7 @@
     </top>
     <center>
         <HBox fx:id="kanbanTable" prefHeight="418.0" prefWidth="616.0" spacing="10.0">
-            <VBox>
+            <VBox prefHeight="400.0" prefWidth="248.0">
                 <Label text="To Do" VBox.vgrow="ALWAYS" />
                 <StackPane>
                     <ListView fx:id="toDoList" />

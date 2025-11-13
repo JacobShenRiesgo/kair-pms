@@ -61,6 +61,7 @@
                     <VBox spacing="15" style="-fx-padding: 20px;">
                         <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" text="Project Management" />
                         <Label style="-fx-font-size: 14px; -fx-text-fill: #6b778c;" text="Manage your projects and tasks efficiently." />
+                        <Label text="TestKanban" onMouseClicked="#handleKanban" />
                     </VBox>
                 </Tab>
 

@@ -41,6 +41,13 @@ public class MainApplication extends Application {
         TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
+    public static void showKanbanScreen() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("kanban.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        TopBar.setupTransparentStage(primaryStage, scene);
+        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
+    }
+
     public static void showSignupScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("signup.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
