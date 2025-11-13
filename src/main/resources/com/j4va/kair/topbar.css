@@ -1,6 +1,7 @@
 #topBar {
     -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082);
     -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10px;
 
 }
 

@@ -19,7 +19,6 @@ public class MainApplication extends Application {
         showLoginScreen();
 
         stage.setTitle("KAIR - Project Management System");
-        stage.setResizable(true);
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();

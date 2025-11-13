@@ -20,7 +20,7 @@
 
                 <!-- Logo -->
                 <HBox alignment="CENTER">
-                    <Label text="▲ KAIR" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #0052cc;" />
+                    <Label text="▲ KAIR" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082)" />
                 </HBox>
 
                 <!-- Title -->
@@ -40,7 +40,7 @@
                 </HBox>
 
                 <!-- Continue Button -->
-                <Button fx:id="continueButton" maxWidth="Infinity" onAction="#handleContinue" text="Continue" style="-fx-background-color: #0052cc; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 12px; -fx-font-size: 14px;" />
+                <Button fx:id="continueButton" maxWidth="Infinity" onAction="#handleContinue" text="Continue" style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 12px; -fx-font-size: 14px;" />
 
                 <!-- Separator -->
                 <Label text="Or continue with:" style="-fx-font-size: 14px; -fx-text-fill: #6b778c; -fx-alignment: center;" />
