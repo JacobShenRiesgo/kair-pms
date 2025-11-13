@@ -6,10 +6,10 @@ import javafx.scene.control.Label;
 public class TaskCardController {
     @FXML
     private Label titleLabel;
-    @FXML private Label descriptionLabel;
+
 
     public void setData(TaskData data) {
         titleLabel.setText(data.getTitle());
-        descriptionLabel.setText(data.getDescription());
+
     }
 }

@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -13,18 +14,29 @@ import java.util.List;
 
 //Linked to the kanban.fxml
 public class KanbanController {
-    @FXML
-    private ListView<TaskData> todoList;
-    @FXML
-    private ListView<TaskData> inProgressList;
-    @FXML
-    private ListView<TaskData> doneList;
+    @FXML private ListView<TaskData> toDoList;
+    @FXML private ListView<TaskData> inProgressList;
+    @FXML private ListView<TaskData> doneList;
+
+    @FXML private javafx.scene.control.Button toDoButton;
+    @FXML private javafx.scene.control.Button inProgressButton;
+    @FXML private javafx.scene.control.Button doneButton;
 
     @FXML
     private void initialize() {
-        setupListView(todoList);
+        setupListView(toDoList);
         setupListView(inProgressList);
         setupListView(doneList);
+
+        toDoButton.setOnAction(e -> createTask(toDoList, "To Do Task"));
+        inProgressButton.setOnAction(e -> createTask(inProgressList, "In Progress Task"));
+        doneButton.setOnAction(e -> createTask(doneList, "Done Task"));
+    }
+
+    private void createTask(ListView<TaskData> list, String defaultTitle) {
+        TaskData newTask = new TaskData(defaultTitle + " " + (list.getItems().size() + 1),
+                "Description...");
+        list.getItems().add(newTask);
     }
 
     private void setupListView(ListView<TaskData> listView) {
@@ -97,7 +109,7 @@ public class KanbanController {
     }
 
     private TaskData findAndRemoveTask(String id) {
-        for (ListView<TaskData> list : List.of(todoList, inProgressList, doneList)) {
+        for (ListView<TaskData> list : List.of(toDoList, inProgressList, doneList)) {
             for (TaskData task : list.getItems()) {
                 if (task.getId().equals(id)) {
                     list.getItems().remove(task);
@@ -106,5 +118,12 @@ public class KanbanController {
             }
         }
         return null;
+    }
+    public void handleKanban(MouseEvent mouseEvent) {
+        try {
+            MainApplication.showKanbanScreen();
+        } catch (IOException e) {
+            System.err.println("Error loading kanban screen: " + e.getMessage());
+        }
     }
 }
