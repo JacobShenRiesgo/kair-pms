@@ -1,11 +1,11 @@
 BorderPane{
     -fx-background-color: #FFFFFF;
 }
-#kanban{
+#kanbanTable{
     -fx-alignment: center;
 
 }
-#kanban .button{
+#kanbanTable .button{
     -fx-background-color:#8113d1;
     -fx-text-fill: white;
     -fx-background-radius: 5;
@@ -14,12 +14,12 @@ BorderPane{
     -fx-pref-height: 40;
 }
 
-#kanban .button:hover{
+#kanbanTable .button:hover{
     -fx-background-color:#7314B7;
 }
 
 
-#kanban .list-view
+#kanbanTable .list-view
 {
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0, 0, 0);
     -fx-border-radius: 5;
