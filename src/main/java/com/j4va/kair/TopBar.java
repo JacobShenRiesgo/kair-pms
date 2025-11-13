@@ -66,7 +66,7 @@ public class TopBar{
         }
     }
 
-    /*private static void enableWindowResizing(Stage stage) {
+    private static void enableWindowResizing(Stage stage) {
         final double border = 8;
         final double minW = 770, minH = 385;
 
@@ -141,7 +141,7 @@ public class TopBar{
                     resizingNW[0] = resizingNE[0] = resizingSE[0] = resizingSW[0] = false;
             scene.setCursor(Cursor.DEFAULT);
         });
-    }*/
+    }
 
 
 
@@ -155,7 +155,7 @@ public class TopBar{
 
             enableWindowDragging(stage, topBar);
             setupWindowButtons(stage, minimizeBtn, maximizeBtn, closeBtn);
-            //enableWindowResizing(stage);
+            enableWindowResizing(stage);
         });
     }
 }

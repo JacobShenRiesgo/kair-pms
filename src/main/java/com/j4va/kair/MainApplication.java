@@ -17,6 +17,7 @@ public class MainApplication extends Application {
 
         // appears when you launch the project
         showLoginScreen();
+
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();
@@ -25,17 +26,17 @@ public class MainApplication extends Application {
     public static void showLoginScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        TopBar.setupTransparentStage(primaryStage, scene);
         primaryStage.setScene(scene);
-
-
+        TopBar.setupTransparentStage(primaryStage, scene);
+        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
     public static void showMainScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
+        primaryStage.setScene(scene);
+        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
     public static void showSignupScreen() throws IOException {
@@ -57,7 +58,7 @@ public class MainApplication extends Application {
         }
         TopBar.setupTransparentStage(primaryStage, scene);
         primaryStage.setScene(scene);
-
+        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
     public static Stage getPrimaryStage() {
