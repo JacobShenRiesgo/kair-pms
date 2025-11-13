@@ -5,8 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import java.io.IOException;
+import java.util.List;
 
 //Linked to the kanban.fxml
 public class KanbanController {
