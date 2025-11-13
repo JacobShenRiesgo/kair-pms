@@ -18,7 +18,6 @@ public class TopBar{
     private static double yOffset = 0;
     public static void setupTransparentStage(Stage stage, Scene scene) {
         scene.setFill(Color.TRANSPARENT);
-        stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         Node root = scene.getRoot();
         Rectangle clip = new Rectangle();

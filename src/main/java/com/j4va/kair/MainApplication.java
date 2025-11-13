@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
@@ -15,9 +16,11 @@ public class MainApplication extends Application {
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
 
+        //Set original top bar to transparent
+        stage.initStyle(StageStyle.TRANSPARENT);
         // appears when you launch the project
         showLoginScreen();
-
+        stage.setResizable(true);
         stage.setMinWidth(600);
         stage.setMinHeight(500);
         stage.show();
@@ -26,23 +29,21 @@ public class MainApplication extends Application {
     public static void showLoginScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
         TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
+
     }
 
     public static void showMainScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         TopBar.setupTransparentStage(primaryStage, scene);
-        primaryStage.setScene(scene);
         TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
     public static void showSignupScreen() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("signup.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        primaryStage.setScene(scene);
         TopBar.setupTransparentStage(primaryStage, scene);
         TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
@@ -57,7 +58,6 @@ public class MainApplication extends Application {
             controller.setUserEmail(email);
         }
         TopBar.setupTransparentStage(primaryStage, scene);
-        primaryStage.setScene(scene);
         TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
 
