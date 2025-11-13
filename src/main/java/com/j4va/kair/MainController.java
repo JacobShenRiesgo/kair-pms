@@ -19,7 +19,7 @@ public class MainController implements Initializable {
         try {
             MainApplication.showKanbanScreen();
         } catch (IOException e) {
-            System.err.println("Error loading kanban screen: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -10,7 +10,7 @@ BorderPane{
     -fx-text-fill: white;
     -fx-background-radius: 5;
     -fx-max-width: Infinity;
-    -fx-alignment: left;
+    -fx-alignment: TOP_LEFT;
     -fx-pref-height: 40;
 }
 
