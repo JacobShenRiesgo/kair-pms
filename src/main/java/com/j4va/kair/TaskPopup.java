@@ -31,8 +31,8 @@ public class TaskPopup {
         String title = titleField.getText();
         String desc = descriptionField.getText();
         String priority = priorityChoice.getValue();
-        TaskData task = new TaskData(title, desc, priority, "TODO");
         if (priority == null) priority = "None";
+        TaskData task = new TaskData(title, desc, priority, "TODO");
         if (callback != null) callback.accept(task);
 
         closePopup();
