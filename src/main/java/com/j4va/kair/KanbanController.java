@@ -40,7 +40,7 @@ public class KanbanController {
         doneButton.setOnAction(e -> createTask(doneList, "Done Task", "DONE"));
     }
 
-    // Open popup to create a new task
+    // Open popup to create new tasks
     @FXML
     private void openCreateTaskPopup() {
         try {
