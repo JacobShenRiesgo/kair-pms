@@ -2,88 +2,45 @@ package com.j4va.kair;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class KanbanController {
 
-    @FXML private VBox todoTasks;
-    @FXML private VBox doingTasks;
-    @FXML private VBox doneTasks;
-    @FXML private BorderPane kanbanRoot;
-    @FXML private VBox todoColumn;
-    @FXML private VBox doingColumn;
-    @FXML private VBox doneColumn;
+    public HBox topBar;
+    @FXML private ListView<TaskData> toDoList;
+    @FXML private ListView<TaskData> inProgressList;
+    @FXML private ListView<TaskData> doneList;
 
-
-    private Project currentProject; // if you wire projects later
+    @FXML private Button toDoButton;
+    @FXML private Button inProgressButton;
+    @FXML private Button doneButton;
 
     @FXML
     private void initialize() {
-        enableColumn(todoTasks);
-        enableColumn(doingTasks);
-        enableColumn(doneTasks);
+        setupListView(toDoList);
+        setupListView(inProgressList);
+        setupListView(doneList);
+
+        // Buttons to create tasks in respective columns
+        toDoButton.setOnAction(e -> createTask(toDoList, "To Do Task", "TODO"));
+        inProgressButton.setOnAction(e -> createTask(inProgressList, "In Progress Task", "IN_PROGRESS"));
+        doneButton.setOnAction(e -> createTask(doneList, "Done Task", "DONE"));
     }
 
-    // Allow dropping cards on a column
-    private void enableColumn(VBox column) {
-        column.setOnDragOver(event -> {
-            if (event.getGestureSource() != column && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        column.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                String taskId = db.getString();
-                Node card = findAndRemoveTask(taskId);
-                if (card != null) {
-                    column.getChildren().add(card);
-                    // update task status stored in userData
-                    TaskData td = (TaskData) card.getUserData();
-                    if (td != null) {
-                        if (column == todoTasks) td.setStatus("TODO");
-                        else if (column == doingTasks) td.setStatus("IN_PROGRESS");
-                        else if (column == doneTasks) td.setStatus("DONE");
-                    }
-                    success = true;
-                }
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
-    }
-
-    // Search each column for the node that contains the TaskData with id, remove and return node
-    private Node findAndRemoveTask(String id) {
-        for (VBox col : new VBox[]{todoTasks, doingTasks, doneTasks}) {
-            for (Node n : col.getChildren()) {
-                Object ud = n.getUserData();
-                if (ud instanceof TaskData) {
-                    if (((TaskData) ud).getId().equals(id)) {
-                        col.getChildren().remove(n);
-                        return n;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    // open popup -> TaskPopup must call setOnTaskCreated(Consumer<TaskData>)
+    // Open popup to create a new task
     @FXML
     private void openCreateTaskPopup() {
         try {
@@ -91,72 +48,127 @@ public class KanbanController {
             Parent root = loader.load();
             TaskPopup popup = loader.getController();
 
-            // When popup creates a TaskData, add it to the correct column
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Create Task");
+            stage.setScene(new Scene(root));
+
+            // When task is created in popup, add it to the proper column
             popup.setOnTaskCreated(this::addTaskToColumn);
 
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle("Create Task");
-            popupStage.setScene(new Scene(root));
-            popupStage.show();
-
+            stage.show();
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @FXML
-    private void goBack() {
-        try {
-            MainApplication.showMainScreen();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Failed to load task popup: " + e.getMessage());
         }
     }
 
+    // Create a task directly in a given column
+    private void createTask(ListView<TaskData> list, String defaultTitle, String status) {
+        TaskData newTask = new TaskData(
+                defaultTitle + " " + (list.getItems().size() + 1),
+                "Description...",
+                status
+        );
+        list.getItems().add(newTask);
+    }
 
-
-
-    // place TaskData in the right column according to status
+    // Add task to correct column based on status
     private void addTaskToColumn(TaskData task) {
         switch (task.getStatus()) {
-            case "IN_PROGRESS" -> addCard(task, doingTasks);
-            case "DONE" -> addCard(task, doneTasks);
-            default -> addCard(task, todoTasks);
+            case "TODO" -> toDoList.getItems().add(task);
+            case "IN_PROGRESS" -> inProgressList.getItems().add(task);
+            case "DONE" -> doneList.getItems().add(task);
+            default -> toDoList.getItems().add(task); // fallback
         }
     }
 
-    private void addCard(TaskData task, VBox column) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
-            Node card = loader.load();
-            TaskCardController c = loader.getController();
-            c.setData(task);
+    // Setup list view to display task cards and enable drag-and-drop
+    private void setupListView(ListView<TaskData> listView) {
+        listView.setCellFactory(lv -> {
+            ListCell<TaskData> cell = new ListCell<>() {
+                @Override
+                protected void updateItem(TaskData task, boolean empty) {
+                    super.updateItem(task, empty);
+                    if (empty || task == null) {
+                        setGraphic(null);
+                    } else {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
+                            HBox taskCard = loader.load();
+                            TaskCardController controller = loader.getController();
+                            controller.setData(task);
+                            setGraphic(taskCard);
+                        } catch (IOException e) {
+                            System.err.println("Failed to load task card: " + e.getMessage());
+                        }
+                    }
+                }
+            };
 
-            // store the TaskData on the node to find it later during drag/drop
-            card.setUserData(task);
-
-            // make the card draggable
-            card.setOnDragDetected(e -> {
-                Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(task.getId());
-                db.setContent(content);
-                e.consume();
-            });
-
-            column.getChildren().add(card);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+            enableDragAndDrop(cell, listView);
+            return cell;
+        });
     }
 
-    // optional: you can call this from Dashboard when opening project
-    public void loadProject(Project project) {
-        this.currentProject = project;
-        // TODO: load tasks for this project from DB and call addCard(...) for each
-        todoTasks.getChildren().clear();
-        doingTasks.getChildren().clear();
-        doneTasks.getChildren().clear();
+    // Enable drag-and-drop for moving tasks between columns
+    private void enableDragAndDrop(ListCell<TaskData> cell, ListView<TaskData> parentList) {
+        cell.setOnDragDetected(event -> {
+            if (cell.isEmpty()) return;
+
+            Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(cell.getItem().getId());
+            db.setContent(content);
+
+            cell.setOpacity(0.5);
+            event.consume();
+        });
+
+        cell.setOnDragDone(event -> {
+            cell.setOpacity(1);
+            event.consume();
+        });
+
+        parentList.setOnDragOver(event -> {
+            if (event.getGestureSource() != parentList && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        parentList.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+
+            if (db.hasString()) {
+                String taskId = db.getString();
+                TaskData movedTask = findAndRemoveTask(taskId);
+                if (movedTask != null) {
+                    // Update status based on target list
+                    if (parentList == toDoList) movedTask.setStatus("TODO");
+                    else if (parentList == inProgressList) movedTask.setStatus("IN_PROGRESS");
+                    else if (parentList == doneList) movedTask.setStatus("DONE");
+
+                    parentList.getItems().add(movedTask);
+                    success = true;
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+    }
+
+    // Find a task by ID in all columns and remove it
+    private TaskData findAndRemoveTask(String id) {
+        for (ListView<TaskData> list : List.of(toDoList, inProgressList, doneList)) {
+            for (TaskData task : list.getItems()) {
+                if (task.getId().equals(id)) {
+                    list.getItems().remove(task);
+                    return task;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -4,12 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox fx:id="background" fx:controller="com.j4va.kair.TaskCardController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="133.0" stylesheets="@taskcard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="background" stylesheets="@taskcard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.TaskCardController">
    <children>
-      <Label fx:id="titleLabel"  prefHeight="18.0" prefWidth="99.0" text="Testing">
-         <HBox.margin>
-            <Insets left="5.0" top="10.0" />
-         </HBox.margin>
-      </Label>
+      <VBox alignment="TOP_LEFT">
+         <children>
+            <Label fx:id="titleLabel" text=" " />
+             <Label fx:id="priorityLabel" text="None">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
+         </children>
+      </VBox>
    </children>
 </HBox>
