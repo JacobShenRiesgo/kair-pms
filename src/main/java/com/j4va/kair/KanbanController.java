@@ -96,6 +96,7 @@ public class KanbanController {
                     super.updateItem(task, empty);
                     if (empty || task == null) {
                         setGraphic(null);
+                        setText(null);
                     } else {
                         try {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
@@ -103,6 +104,7 @@ public class KanbanController {
                             TaskCardController controller = loader.getController();
                             controller.setData(task);
                             setGraphic(taskCard);
+                            setText(null);
                         } catch (IOException e) {
                             System.err.println("Failed to load task card: " + e.getMessage());
                         }
