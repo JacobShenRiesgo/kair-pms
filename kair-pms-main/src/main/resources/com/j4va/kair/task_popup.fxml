@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.TaskPopup">
+
+    <Label style="-fx-font-size: 18px;" text="Create New Task" />
+
+    <TextField fx:id="titleField" promptText="Task Title">
+      <VBox.margin>
+         <Insets left="2.0" right="2.0" />
+      </VBox.margin></TextField>
+    <TextArea fx:id="descriptionField" prefRowCount="4" promptText="Description">
+      <VBox.margin>
+         <Insets left="2.0" right="2.0" />
+      </VBox.margin></TextArea>
+    <HBox prefHeight="23.0" prefWidth="479.0" spacing="10">
+        <Label prefHeight="25.0" prefWidth="41.0" text="Priority:">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></Label>
+        <ComboBox fx:id="priorityChoice" prefHeight="26.0" prefWidth="74.0" promptText="None">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="None"/>
+                    <String fx:value="Low"/>
+                    <String fx:value="Medium"/>
+                    <String fx:value="High"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+      <VBox.margin>
+         <Insets left="4.0" />
+      </VBox.margin>
+    </HBox>
+
+    <HBox spacing="10">
+        <Button onAction="#onCancel" text="Cancel">
+         <HBox.margin>
+            <Insets />
+         </HBox.margin></Button>
+        <Button onAction="#onCreate" text="Create" />
+      <VBox.margin>
+         <Insets bottom="2.0" left="2.0" />
+      </VBox.margin>
+    </HBox>
+</VBox>

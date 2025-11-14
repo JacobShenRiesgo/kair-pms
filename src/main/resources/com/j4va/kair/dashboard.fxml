@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.j4va.kair.DashboardController"
+            prefWidth="900" prefHeight="600"
+            stylesheets="@dashboard.css">
+
+    <top>
+        <fx:include source="topbar.fxml" />
+    </top>
+
+    <center>
+        <VBox spacing="15" alignment="TOP_CENTER" padding="20">
+
+            <HBox alignment="CENTER_RIGHT" prefHeight="40">
+                <Button fx:id="createProjectButton"
+                        text="+ Create Project"
+                        onAction="#openCreateProjectPopup"
+                        styleClass="create-btn" />
+            </HBox>
+
+            <TableView fx:id="projectTable" prefHeight="500" prefWidth="850">
+
+                <columns>
+                    <TableColumn fx:id="colName" text="Project Name" prefWidth="200"/>
+                    <TableColumn fx:id="colAssignee" text="Assignee" prefWidth="150"/>
+                    <TableColumn fx:id="colPriority" text="Priority" prefWidth="120"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+                    <TableColumn fx:id="colCreated" text="Date Created" prefWidth="140"/>
+                    <TableColumn fx:id="colDue" text="Due Date" prefWidth="140"/>
+                </columns>
+
+            </TableView>
+
+        </VBox>
+    </center>
+
+</BorderPane>

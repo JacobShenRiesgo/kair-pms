@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.j4va.kair.ProjectListController"
+            style="-fx-background-color:#ffffff;">
+
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding:12;">
+            <Button text="⟵ Back" onAction="#handleBack" style="-fx-background-color:transparent; -fx-text-fill:#6a0dad; -fx-font-weight:bold;"/>
+            <Label text="Projects" style="-fx-font-size:18px; -fx-font-weight:bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="+ Create Project" onAction="#openCreateProject" style="-fx-background-color:#6a0dad; -fx-text-fill:white; -fx-font-weight:bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding:16;">
+            <TableView fx:id="projectTable" prefHeight="600" prefWidth="1000">
+                <columns>
+                    <TableColumn fx:id="colWork" text="Work" prefWidth="240"/>
+                    <TableColumn fx:id="colAssignee" text="Assignee" prefWidth="160"/>
+                    <TableColumn fx:id="colPriority" text="Priority" prefWidth="100"/>
+                    <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
+                    <TableColumn fx:id="colCreated" text="Date Created" prefWidth="120"/>
+                    <TableColumn fx:id="colDue" text="Due Date" prefWidth="120"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

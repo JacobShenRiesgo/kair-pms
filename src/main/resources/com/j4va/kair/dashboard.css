@@ -1,0 +1,18 @@
+.create-btn {
+    -fx-background-color: #7D3C98;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 8;
+}
+
+.create-btn:hover {
+    -fx-background-color: #9B59B6;
+    -fx-cursor: hand;
+}
+
+.table-view {
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}

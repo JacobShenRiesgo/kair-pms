@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.j4va.kair.ProjectPopup"
+      spacing="10" padding="20">
+
+    <Label text="Create New Project" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+
+    <TextField fx:id="nameField" promptText="Project Name" />
+    <TextField fx:id="assigneeField" promptText="Assignee" />
+    <ComboBox fx:id="priorityBox">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Highest"/>
+                <String fx:value="High"/>
+                <String fx:value="Medium"/>
+                <String fx:value="Low"/>
+                <String fx:value="Lowest"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <ComboBox fx:id="statusBox">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="TODO"/>
+                <String fx:value="IN_PROGRESS"/>
+                <String fx:value="DONE"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <DatePicker fx:id="dueDatePicker" />
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#onCancel"/>
+        <Button text="Create" onAction="#onCreate"/>
+    </HBox>
+
+</VBox>

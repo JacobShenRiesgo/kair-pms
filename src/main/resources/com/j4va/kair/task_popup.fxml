@@ -1,51 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.TaskPopup">
+<VBox spacing="12"
+      alignment="TOP_CENTER"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.j4va.kair.TaskPopup"
+      style="-fx-padding: 20;">
 
-    <Label style="-fx-font-size: 18px;" text="Create New Task" />
+    <Label text="Create New Task"
+           style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <TextField fx:id="titleField" promptText="Task Title">
-      <VBox.margin>
-         <Insets left="2.0" right="2.0" />
-      </VBox.margin></TextField>
-    <TextArea fx:id="descriptionField" prefRowCount="4" promptText="Description">
-      <VBox.margin>
-         <Insets left="2.0" right="2.0" />
-      </VBox.margin></TextArea>
-    <HBox prefHeight="23.0" prefWidth="479.0" spacing="10">
-        <Label prefHeight="25.0" prefWidth="41.0" text="Priority:">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin></Label>
-        <ComboBox fx:id="priorityChoice" prefHeight="26.0" prefWidth="74.0" promptText="None">
-            <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="None"/>
-                    <String fx:value="Low"/>
-                    <String fx:value="Medium"/>
-                    <String fx:value="High"/>
-                </FXCollections>
-            </items>
-        </ComboBox>
-      <VBox.margin>
-         <Insets left="4.0" />
-      </VBox.margin>
-    </HBox>
+    <TextField fx:id="titleField"
+               promptText="Task Title"
+               maxWidth="300"/>
 
-    <HBox spacing="10">
-        <Button onAction="#onCancel" text="Cancel">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin></Button>
-        <Button onAction="#onCreate" text="Create" />
-      <VBox.margin>
-         <Insets bottom="2.0" left="2.0" />
-      </VBox.margin>
+    <TextArea fx:id="descriptionField"
+              promptText="Description"
+              maxWidth="300"
+              prefRowCount="4"/>
+    <ComboBox fx:id="priorityChoice" prefHeight="26.0" prefWidth="74.0" promptText="None">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="None"/>
+                <String fx:value="Low"/>
+                <String fx:value="Medium"/>
+                <String fx:value="High"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#onCancel" />
+        <Button text="Create" onAction="#onCreate" />
     </HBox>
 </VBox>

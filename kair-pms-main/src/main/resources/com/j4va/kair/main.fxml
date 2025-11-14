@@ -23,23 +23,15 @@
                         <Insets top="20" />
                     </VBox.margin>
 
-                    <Button text="Create Project"
-                            onAction="#handleCreateProject"
-                            style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082);
-               -fx-text-fill: white;
-               -fx-font-weight: bold;
-               -fx-background-radius: 4px;
-               -fx-padding: 15px 25px;
-               -fx-font-size: 14px;" />
-
-                    <Button style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="View Projects" />
-                    <Button style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="Team Dashboard" />
+                    <Button fx:id="createProjectButton" style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="Create Project" />
+                    <Button fx:id="viewProjectsButton" style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="View Projects" />
+                    <Button fx:id="teamDashboardButton" style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="Team Dashboard" />
                 </HBox>
 
             </VBox>
 
             <!-- Main Content Tabs -->
-            <TabPane style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-background-radius: 8px;" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="mainTabPane" style="-fx-background-color: white; -fx-border-color: #ddd; -fx-border-radius: 8px; -fx-background-radius: 8px;" tabClosingPolicy="UNAVAILABLE">
 
                 <Tab text="Dashboard">
                     <VBox spacing="15" style="-fx-padding: 20px;">
@@ -49,28 +41,26 @@
                         <HBox spacing="15">
                             <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
                                 <Label style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" text="Active Projects" />
-                                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082);" text="12" />
+                                <Label fx:id="activeProjectsLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082);" text="12" />
                             </VBox>
 
                             <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
                                 <Label style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" text="Completed Tasks" />
-                                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #28a745;" text="847" />
+                                <Label fx:id="completedTasksLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #28a745;" text="847" />
                             </VBox>
 
                             <VBox spacing="10" style="-fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 15px; -fx-min-width: 200px;">
                                 <Label style="-fx-font-size: 14px; -fx-text-fill: #6c757d;" text="Team Members" />
-                                <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #fd7e14;" text="23" />
+                                <Label fx:id="teamMembersLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #fd7e14;" text="23" />
                             </VBox>
                         </HBox>
                     </VBox>
                 </Tab>
 
                 <Tab text="Projects">
-                    <VBox spacing="15" style="-fx-padding: 20px;">
-                        <Label style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #172b4d;" text="Project Management" />
-                        <Label style="-fx-font-size: 14px; -fx-text-fill: #6b778c;" text="Manage your projects and tasks efficiently." />
-                        <Label onMouseClicked="#handleKanban" style="-fx-underline: true; -fx-text-fill: #7118B1;" text="TestKanban (Click to tesk kanban page)" />
-                    </VBox>
+                    <ScrollPane fitToWidth="true">
+                        <HBox fx:id="projectsContainer" spacing="15" style="-fx-padding: 20px;" />
+                    </ScrollPane>
                 </Tab>
 
                 <Tab text="Issues">

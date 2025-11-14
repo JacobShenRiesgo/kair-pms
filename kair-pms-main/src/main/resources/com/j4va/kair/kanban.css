@@ -17,8 +17,8 @@ BorderPane{
 #kanbanTable .button:hover{
     -fx-background-color:#7314B7;
 }
-#kanbanTable{
-    -fx-pref-height: infinity;
+#kanbanTable .vbox{
+
 }
 
 #kanbanTable .list-view
@@ -33,9 +33,6 @@ BorderPane{
     -fx-max-height: 500;
     -fx-background-color: #F8F8F8;
 
-}
-.list-view .cell { /*Makes the list background the same even if task is created */
-    -fx-background-color: transparent;
 }
 .label{
     -fx-alignment: center;
