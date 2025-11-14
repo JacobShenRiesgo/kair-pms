@@ -2,6 +2,7 @@ package com.j4va.kair;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,14 +36,14 @@ public class KanbanController {
         setupListView(doneList);
 
         // Buttons to create tasks in respective columns
-        toDoButton.setOnAction(e -> createTask(toDoList, "To Do Task", "TODO"));
-        inProgressButton.setOnAction(e -> createTask(inProgressList, "In Progress Task", "IN_PROGRESS"));
-        doneButton.setOnAction(e -> createTask(doneList, "Done Task", "DONE"));
+        toDoButton.setOnAction(e -> openCreateTaskPopup(toDoList, "TODO"));
+        inProgressButton.setOnAction(e -> openCreateTaskPopup(inProgressList, "IN_PROGRESS"));
+        doneButton.setOnAction(e -> openCreateTaskPopup(doneList, "DONE"));
     }
 
     // Open popup to create a new task
     @FXML
-    private void openCreateTaskPopup() {
+    private void openCreateTaskPopup(ListView<TaskData> column, String status) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("task_popup.fxml"));
             Parent root = loader.load();
@@ -54,22 +55,15 @@ public class KanbanController {
             stage.setScene(new Scene(root));
 
             // When task is created in popup, add it to the proper column
-            popup.setOnTaskCreated(this::addTaskToColumn);
+            popup.setOnTaskCreated(task -> {
+                task.setStatus(status);   // ensure task gets the correct column status
+                column.getItems().add(task);
+            });
 
             stage.show();
         } catch (IOException e) {
             System.err.println("Failed to load task popup: " + e.getMessage());
         }
-    }
-
-    // Create a task directly in a given column
-    private void createTask(ListView<TaskData> list, String defaultTitle, String status) {
-        TaskData newTask = new TaskData(
-                defaultTitle + " " + (list.getItems().size() + 1),
-                "Description...",
-                status
-        );
-        list.getItems().add(newTask);
     }
 
     // Add task to correct column based on status
@@ -91,6 +85,7 @@ public class KanbanController {
                     super.updateItem(task, empty);
                     if (empty || task == null) {
                         setGraphic(null);
+                        setText(null);
                     } else {
                         try {
                             FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
@@ -98,45 +93,53 @@ public class KanbanController {
                             TaskCardController controller = loader.getController();
                             controller.setData(task);
                             setGraphic(taskCard);
+                            setText(null);
                         } catch (IOException e) {
                             System.err.println("Failed to load task card: " + e.getMessage());
                         }
                     }
                 }
             };
-
+            // Call the unified method for the cell
             enableDragAndDrop(cell, listView);
             return cell;
         });
+        // Call the unified method for the ListView itself (to allow drops when empty)
+        enableDragAndDrop(listView, listView);
     }
 
     // Enable drag-and-drop for moving tasks between columns
-    private void enableDragAndDrop(ListCell<TaskData> cell, ListView<TaskData> parentList) {
-        cell.setOnDragDetected(event -> {
-            if (cell.isEmpty()) return;
+    private void enableDragAndDrop(Node node, ListView<TaskData> parentList) {
+        // If the node is a ListCell, handle drag detection for dragging out
+        if (node instanceof ListCell<?> cell) {
+            cell.setOnDragDetected(event -> {
+                if (cell.isEmpty()) return;
 
-            Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(cell.getItem().getId());
-            db.setContent(content);
+                Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                content.putString(((TaskData) cell.getItem()).getId());
+                db.setContent(content);
 
-            cell.setOpacity(0.5);
-            event.consume();
-        });
+                cell.setOpacity(0.5);
+                event.consume();
+            });
 
-        cell.setOnDragDone(event -> {
-            cell.setOpacity(1);
-            event.consume();
-        });
+            cell.setOnDragDone(event -> {
+                cell.setOpacity(1);
+                event.consume();
+            });
+        }
 
-        parentList.setOnDragOver(event -> {
+        // Handle drag-over for both ListCell and ListView
+        node.setOnDragOver(event -> {
             if (event.getGestureSource() != parentList && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
         });
 
-        parentList.setOnDragDropped(event -> {
+        // Handle drop for both ListCell and ListView
+        node.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
 

@@ -8,6 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox spacing="12"
       alignment="TOP_CENTER"
       xmlns="http://javafx.com/javafx/17"
@@ -26,10 +29,18 @@
               promptText="Description"
               maxWidth="300"
               prefRowCount="4"/>
-
+    <ComboBox fx:id="priorityChoice" prefHeight="26.0" prefWidth="74.0" promptText="None">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="None"/>
+                <String fx:value="Low"/>
+                <String fx:value="Medium"/>
+                <String fx:value="High"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
     <HBox spacing="10" alignment="CENTER_RIGHT">
         <Button text="Cancel" onAction="#onCancel" />
         <Button text="Create" onAction="#onCreate" />
     </HBox>
-
 </VBox>

@@ -17,8 +17,8 @@ BorderPane{
 #kanbanTable .button:hover{
     -fx-background-color:#7314B7;
 }
-#kanbanTable .vbox{
-
+#kanbanTable{
+    -fx-pref-height: infinity;
 }
 
 #kanbanTable .list-view
