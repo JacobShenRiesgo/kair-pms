@@ -1,0 +1,40 @@
+BorderPane{
+    -fx-background-color: #FFFFFF;
+}
+#kanbanTable{
+    -fx-alignment: center;
+
+}
+#kanbanTable .button{
+    -fx-background-color:#8113d1;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-max-width: Infinity;
+    -fx-alignment: TOP_LEFT;
+    -fx-pref-height: 40;
+}
+
+#kanbanTable .button:hover{
+    -fx-background-color:#7314B7;
+}
+#kanbanTable .vbox{
+
+}
+
+#kanbanTable .list-view
+{
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0, 0, 0);
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-max-width: 320;
+    -fx-pref-height: 320;
+    -fx-max-height: 500;
+    -fx-background-color: #F8F8F8;
+
+}
+.label{
+    -fx-alignment: center;
+    -fx-max-width: Infinity;
+}

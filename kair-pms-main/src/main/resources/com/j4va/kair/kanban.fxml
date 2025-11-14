@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="kanbanRoot" prefHeight="464.0" prefWidth="871.0" stylesheets="@kanban.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.KanbanController">
+
+    <!-- Top bar -->
+    <top>
+        <fx:include fx:id="topBar" source="topbar.fxml" />
+    </top>
+
+    <!-- Kanban columns -->
+    <center>
+        <HBox fx:id="kanbanTable" prefHeight="418.0" prefWidth="616.0" spacing="10.0">
+
+            <!-- To Do Column -->
+            <VBox prefHeight="400.0" prefWidth="248.0">
+                <Label text="To Do" VBox.vgrow="ALWAYS" />
+                <StackPane>
+                    <ListView fx:id="toDoList" prefWidth="248.0" />
+                    <Button fx:id="toDoButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                        <StackPane.margin>
+                            <Insets bottom="5.0" left="3.0" right="3.0" />
+                        </StackPane.margin>
+                    </Button>
+                </StackPane>
+            </VBox>
+
+            <!-- In Progress Column -->
+            <VBox>
+                <Label text="In Progress" VBox.vgrow="ALWAYS" />
+                <StackPane>
+                    <ListView fx:id="inProgressList" />
+                    <Button fx:id="inProgressButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                        <StackPane.margin>
+                            <Insets bottom="5.0" left="3.0" right="3.0" />
+                        </StackPane.margin>
+                    </Button>
+                </StackPane>
+            </VBox>
+
+            <!-- Done Column -->
+            <VBox>
+                <Label text="Done" VBox.vgrow="ALWAYS" />
+                <StackPane>
+                    <ListView fx:id="doneList" />
+                    <Button fx:id="doneButton" text="+ Task" StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+                        <StackPane.margin>
+                            <Insets bottom="5.0" left="3.0" right="3.0" />
+                        </StackPane.margin>
+                    </Button>
+                </StackPane>
+            </VBox>
+
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+        </HBox>
+    </center>
+</BorderPane>
