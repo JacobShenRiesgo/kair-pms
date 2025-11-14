@@ -23,7 +23,15 @@
                         <Insets top="20" />
                     </VBox.margin>
 
-                    <Button style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="Create Project" />
+                    <Button text="Create Project"
+                            onAction="#handleCreateProject"
+                            style="-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082);
+               -fx-text-fill: white;
+               -fx-font-weight: bold;
+               -fx-background-radius: 4px;
+               -fx-padding: 15px 25px;
+               -fx-font-size: 14px;" />
+
                     <Button style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="View Projects" />
                     <Button style="-fx-background-color: white; -fx-border-color: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-text-fill: linear-gradient(from 0% 0% to 0% 100%, #6a0dad, #4b0082); -fx-font-weight: bold; -fx-background-radius: 4px; -fx-border-radius: 4px; -fx-padding: 15px 25px; -fx-font-size: 14px;" text="Team Dashboard" />
                 </HBox>

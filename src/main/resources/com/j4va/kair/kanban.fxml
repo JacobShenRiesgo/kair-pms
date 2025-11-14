@@ -1,71 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="464.0" prefWidth="871.0" stylesheets="@kanban.css"
-            xmlns="http://javafx.com/javafx/17.0.12"
+<BorderPane fx:id="kanbanRoot"
+            prefHeight="464" prefWidth="871"
+            xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.j4va.kair.KanbanController">
 
-    <!-- Top bar -->
+    <!-- ===================== TOP BAR ===================== -->
     <top>
-        <fx:include fx:id="topBar" source="topbar.fxml" />
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+
+            <Button text="⟵Back"
+                    onAction="#goBack"
+                    style="-fx-background-color: white;
+                           -fx-text-fill: #4A148C;
+                           -fx-font-weight: bold;"/>
+
+            <Label text="Kanban Board"
+                   style="-fx-text-fill: #4A148C;
+                          -fx-font-size: 18;
+                          -fx-font-weight: bold;"/>
+        </HBox>
     </top>
 
-    <!-- Kanban columns -->
+    <!-- ===================== MAIN BOARD ===================== -->
     <center>
-        <HBox fx:id="kanbanTable" prefHeight="418.0" prefWidth="616.0" spacing="10.0">
+        <HBox spacing="20" alignment="TOP_CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
 
-            <!-- To Do Column -->
-            <VBox prefHeight="400.0" prefWidth="248.0">
-                <Label text="To Do" VBox.vgrow="ALWAYS" />
-                <StackPane>
-                    <ListView fx:id="toDoList" />
-                    <Button fx:id="toDoButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
-                            StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                        <StackPane.margin>
-                            <Insets bottom="5.0" left="3.0" right="3.0" />
-                        </StackPane.margin>
-                    </Button>
-                </StackPane>
+
+            <!-- ===================== TODO COLUMN ===================== -->
+            <VBox fx:id="todoColumn" spacing="8" prefWidth="260">
+                <Label text="To Do" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+                <VBox fx:id="todoTasks" spacing="8"
+                      style="-fx-background-color: #fafafa;
+                             -fx-padding: 8;
+                             -fx-border-color: #e0e0e0;
+                             -fx-border-radius: 6;
+                             -fx-background-radius: 6;" />
+
+                <Button text="+ Task" onAction="#openCreateTaskPopup"/>
             </VBox>
 
-            <!-- In Progress Column -->
-            <VBox>
-                <Label text="In Progress" VBox.vgrow="ALWAYS" />
-                <StackPane>
-                    <ListView fx:id="inProgressList" />
-                    <Button fx:id="inProgressButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
-                            StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                        <StackPane.margin>
-                            <Insets bottom="5.0" left="3.0" right="3.0" />
-                        </StackPane.margin>
-                    </Button>
-                </StackPane>
+            <!-- ===================== IN PROGRESS ===================== -->
+            <VBox fx:id="doingColumn" spacing="8" prefWidth="260">
+                <Label text="In Progress" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+                <VBox fx:id="doingTasks" spacing="8"
+                      style="-fx-background-color: #fafafa;
+                             -fx-padding: 8;
+                             -fx-border-color: #e0e0e0;
+                             -fx-border-radius: 6;
+                             -fx-background-radius: 6;" />
+
+                <Button text="+ Task" onAction="#openCreateTaskPopup"/>
             </VBox>
 
-            <!-- Done Column -->
-            <VBox>
-                <Label text="Done" VBox.vgrow="ALWAYS" />
-                <StackPane>
-                    <ListView fx:id="doneList" />
-                    <Button fx:id="doneButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
-                            StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
-                        <StackPane.margin>
-                            <Insets bottom="5.0" left="3.0" right="3.0" />
-                        </StackPane.margin>
-                    </Button>
-                </StackPane>
-            </VBox>
+            <!-- ===================== DONE ===================== -->
+            <VBox fx:id="doneColumn" spacing="8" prefWidth="260">
+                <Label text="Done" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
 
-            <BorderPane.margin>
-                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-            </BorderPane.margin>
+                <VBox fx:id="doneTasks" spacing="8"
+                      style="-fx-background-color: #fafafa;
+                             -fx-padding: 8;
+                             -fx-border-color: #e0e0e0;
+                             -fx-border-radius: 6;
+                             -fx-background-radius: 6;" />
+
+                <Button text="+ Task" onAction="#openCreateTaskPopup"/>
+            </VBox>
 
         </HBox>
     </center>

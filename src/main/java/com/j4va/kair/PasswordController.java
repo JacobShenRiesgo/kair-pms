@@ -7,41 +7,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PasswordController implements Initializable {
 
-    @FXML
-    private Label emailLabel;
+    @FXML private Label emailLabel;
+    @FXML private PasswordField passwordField;
+    @FXML private Button createAccountButton;
 
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Button createAccountButton;
-
-    @FXML
-    private Label lengthRequirement;
-
-    @FXML
-    private Label uppercaseRequirement;
-
-    @FXML
-    private Label lowercaseRequirement;
-
-    @FXML
-    private Label numberRequirement;
+    @FXML private Label lengthRequirement;
+    @FXML private Label uppercaseRequirement;
+    @FXML private Label lowercaseRequirement;
+    @FXML private Label numberRequirement;
 
     private String userEmail;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set up password field listener to validate in real-time
-        passwordField.textProperty().addListener((observable, oldValue, newValue) -> {
-            validatePassword(newValue);
-        });
+        passwordField.textProperty().addListener((observable, oldValue, newValue) ->
+                validatePassword(newValue));
     }
 
     public void setUserEmail(String email) {
@@ -52,7 +37,7 @@ public class PasswordController implements Initializable {
     }
 
     private void validatePassword(String password) {
-        // Check length (at least 8 characters)
+        // Length
         if (password.length() >= 8) {
             lengthRequirement.setStyle("-fx-font-size: 11px; -fx-text-fill: #00875a;");
             lengthRequirement.setText("✓ At least 8 characters");
@@ -61,7 +46,7 @@ public class PasswordController implements Initializable {
             lengthRequirement.setText("• At least 8 characters");
         }
 
-        // Check uppercase
+        // Uppercase
         if (password.matches(".*[A-Z].*")) {
             uppercaseRequirement.setStyle("-fx-font-size: 11px; -fx-text-fill: #00875a;");
             uppercaseRequirement.setText("✓ At least 1 uppercase letter");
@@ -70,7 +55,7 @@ public class PasswordController implements Initializable {
             uppercaseRequirement.setText("• At least 1 uppercase letter");
         }
 
-        // Check lowercase
+        // Lowercase
         if (password.matches(".*[a-z].*")) {
             lowercaseRequirement.setStyle("-fx-font-size: 11px; -fx-text-fill: #00875a;");
             lowercaseRequirement.setText("✓ At least 1 lowercase letter");
@@ -79,7 +64,7 @@ public class PasswordController implements Initializable {
             lowercaseRequirement.setText("• At least 1 lowercase letter");
         }
 
-        // Check number
+        // Number
         if (password.matches(".*[0-9].*")) {
             numberRequirement.setStyle("-fx-font-size: 11px; -fx-text-fill: #00875a;");
             numberRequirement.setText("✓ At least 1 number");
@@ -91,9 +76,9 @@ public class PasswordController implements Initializable {
 
     private boolean isPasswordValid(String password) {
         return password.length() >= 8 &&
-               password.matches(".*[A-Z].*") &&
-               password.matches(".*[a-z].*") &&
-               password.matches(".*[0-9].*");
+                password.matches(".*[A-Z].*") &&
+                password.matches(".*[a-z].*") &&
+                password.matches(".*[0-9].*");
     }
 
     @FXML
@@ -102,27 +87,15 @@ public class PasswordController implements Initializable {
 
         if (isPasswordValid(password)) {
             System.out.println("Account created successfully for: " + userEmail);
-
-            // Navigate to main screen
-            try {
-                MainApplication.showMainScreen();
-            } catch (IOException e) {
-                System.err.println("Error loading main screen: " + e.getMessage());
-                e.printStackTrace();
-            }
+            MainApplication.showMainScreen(); // ← FIXED (no IOException)
         } else {
             System.out.println("Password does not meet requirements");
-            // You could show an error dialog here
         }
     }
 
     @FXML
     private void handleBackToLogin(MouseEvent event) {
         System.out.println("Back to login clicked");
-        try {
-            MainApplication.showLoginScreen();
-        } catch (IOException e) {
-            System.err.println("Error loading login screen: " + e.getMessage());
-        }
+        MainApplication.showLoginScreen(); // ← FIXED (no IOException)
     }
 }

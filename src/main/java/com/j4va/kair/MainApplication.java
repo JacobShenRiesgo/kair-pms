@@ -2,71 +2,112 @@ package com.j4va.kair;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
-import java.io.IOException;
 
 public class MainApplication extends Application {
 
     private static Stage primaryStage;
+    private static BorderPane rootLayout;   // Holds the whole application
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
         primaryStage = stage;
 
-        //Set original top bar to transparent
-        stage.initStyle(StageStyle.TRANSPARENT);
-        // appears when you launch the project
+        // Transparent custom window
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+
+        // Root layout (shared by all screens)
+        rootLayout = new BorderPane();
+
+        Scene scene = new Scene(rootLayout, 1200, 800);
+
+        // Transparent top bar setup
+        TopBar.setupTransparentStage(primaryStage, scene);
+
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(true);
+        primaryStage.setMinWidth(900);
+        primaryStage.setMinHeight(600);
+        primaryStage.show();
+
+        // FIRST screen to show
         showLoginScreen();
-        stage.setResizable(true);
-        stage.setMinWidth(600);
-        stage.setMinHeight(500);
-        stage.show();
     }
 
-    public static void showLoginScreen() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        TopBar.setupTransparentStage(primaryStage, scene);
-        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
+    /* ---------------------------------------------------------
+       UNIVERSAL SCREEN LOADER
+       --------------------------------------------------------- */
+    public static void setView(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource(fxml));
+            Parent view = loader.load();
 
-    }
+            // Load screen into CENTER of main window
+            rootLayout.setCenter(view);
 
-    public static void showMainScreen() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        TopBar.setupTransparentStage(primaryStage, scene);
-        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
-    }
+            // Reinitialize topbar (if screen contains #topBar)
+            TopBar.initializeTopBar(view.lookup("#topBar"));
 
-    public static void showKanbanScreen() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("kanban.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        TopBar.setupTransparentStage(primaryStage, scene);
-        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
-    }
-
-    public static void showSignupScreen() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("signup.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-        TopBar.setupTransparentStage(primaryStage, scene);
-        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
-    }
-
-    public static void showPasswordScreen(String email) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("password.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 950, 750);
-
-        // Get the controller and set the email after FXML is loaded
-        PasswordController controller = fxmlLoader.getController();
-        if (controller != null) {
-            controller.setUserEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        TopBar.setupTransparentStage(primaryStage, scene);
-        TopBar.initializeTopBar(scene.getRoot().lookup("#topBar"));
     }
+
+    /* ---------------------------------------------------------
+       NAMED SCREEN SWITCHERS
+       --------------------------------------------------------- */
+
+    public static void showLoginScreen() {
+        setView("login.fxml");
+    }
+
+    public static void showSignupScreen() {
+        setView("signup.fxml");
+    }
+
+    public static void showMainScreen() {
+        setView("main.fxml");
+    }
+
+    public static void showKanbanScreen() {
+        setView("kanban.fxml");
+    }
+
+    public static void showProjectListScreen() {
+        setView("projectlist.fxml");
+    }
+
+    public static void showCreateProjectScreen() {
+        setView("create_project.fxml");
+    }
+
+    /* ---------------------------------------------------------
+       SPECIAL CASE: Password Screen (needs email)
+       --------------------------------------------------------- */
+
+    public static void showPasswordScreen(String email) {
+        try {
+            FXMLLoader loader = new FXMLLoader(MainApplication.class.getResource("password.fxml"));
+            Parent view = loader.load();
+
+            PasswordController controller = loader.getController();
+            controller.setUserEmail(email);
+
+            rootLayout.setCenter(view);
+            TopBar.initializeTopBar(view.lookup("#topBar"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* ---------------------------------------------------------
+       GET PRIMARY STAGE
+       --------------------------------------------------------- */
 
     public static Stage getPrimaryStage() {
         return primaryStage;
