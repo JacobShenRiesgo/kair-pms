@@ -63,14 +63,15 @@ public class KanbanController {
     }
 
     // Create a task directly in a given column
-    private void createTask(ListView<TaskData> list, String defaultTitle, String status) {
+    /*private void createTask(ListView<TaskData> list, String defaultTitle, String status) {
         TaskData newTask = new TaskData(
                 defaultTitle + " " + (list.getItems().size() + 1),
                 "Description...",
+                priority,
                 status
         );
         list.getItems().add(newTask);
-    }
+    }*/
 
     // Add task to correct column based on status
     private void addTaskToColumn(TaskData task) {

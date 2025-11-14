@@ -8,7 +8,7 @@
       <VBox HBox.hgrow="ALWAYS">
          <children>
             <Label fx:id="titleLabel" text="" />
-             <Label fx:id="priorityLabel" text="" />
+             <Label fx:id="priorityLabel" text="None" />
          </children>
       </VBox>
    </children>
