@@ -24,7 +24,6 @@
                 <StackPane>
                     <ListView fx:id="toDoList" />
                     <Button fx:id="toDoButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
                             StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                         <StackPane.margin>
                             <Insets bottom="5.0" left="3.0" right="3.0" />
@@ -39,7 +38,6 @@
                 <StackPane>
                     <ListView fx:id="inProgressList" />
                     <Button fx:id="inProgressButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
                             StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                         <StackPane.margin>
                             <Insets bottom="5.0" left="3.0" right="3.0" />
@@ -54,7 +52,6 @@
                 <StackPane>
                     <ListView fx:id="doneList" />
                     <Button fx:id="doneButton" text="+ Task"
-                            onAction="#openCreateTaskPopup"
                             StackPane.alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
                         <StackPane.margin>
                             <Insets bottom="5.0" left="3.0" right="3.0" />
