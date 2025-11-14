@@ -17,22 +17,29 @@ BorderPane{
 #kanbanTable .button:hover{
     -fx-background-color:#7314B7;
 }
-#kanbanTable .vbox{
-
-}
-
-#kanbanTable .list-view
-{
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0, 0, 0);
+#kanbanTable .Column{
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,1.5), 1, 0, 0, 0);
     -fx-border-radius: 5;
     -fx-background-radius: 5;
     -fx-border-color: transparent;
     -fx-background-insets: 0;
-    -fx-max-width: 320;
-    -fx-pref-height: 320;
-    -fx-max-height: 500;
     -fx-background-color: #F8F8F8;
+}
+#kanbanTable .Column .columnLabel{
+    -fx-background-color: #CCC5CC;
+}
+}
+#kanbanTable .list-view
+{
+    -fx-pref-height: 250;
+    -fx-max-height: infinity;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
 
+}
+#kanbanTable .Stack{
+    -fx-pref-height: 0;
+    -fx-max-height: infinity;
 }
 .list-view .cell { /*Makes the list background the same even if task is created */
     -fx-background-color: transparent;

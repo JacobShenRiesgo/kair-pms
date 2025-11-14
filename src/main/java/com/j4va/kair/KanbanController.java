@@ -2,7 +2,6 @@ package com.j4va.kair;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +19,7 @@ import java.util.List;
 
 public class KanbanController {
 
-    public HBox topBar;
+    @FXML private HBox topBar;
     @FXML private ListView<TaskData> toDoList;
     @FXML private ListView<TaskData> inProgressList;
     @FXML private ListView<TaskData> doneList;
@@ -28,6 +27,10 @@ public class KanbanController {
     @FXML private Button toDoButton;
     @FXML private Button inProgressButton;
     @FXML private Button doneButton;
+
+    // Heights for dynamic resizing
+    private static final double LIST_START_HEIGHT = 250; // empty list height
+    private static final double TASK_CELL_HEIGHT = 40;  // match your task card height
 
     @FXML
     private void initialize() {
@@ -39,10 +42,14 @@ public class KanbanController {
         toDoButton.setOnAction(e -> openCreateTaskPopup(toDoList, "TODO"));
         inProgressButton.setOnAction(e -> openCreateTaskPopup(inProgressList, "IN_PROGRESS"));
         doneButton.setOnAction(e -> openCreateTaskPopup(doneList, "DONE"));
+
+        // Initialize the ListViews with start height
+        setInitialListHeight(toDoList);
+        setInitialListHeight(inProgressList);
+        setInitialListHeight(doneList);
     }
 
-    // Open popup to create a new task
-    @FXML
+    /* Open popup to create a new task */
     private void openCreateTaskPopup(ListView<TaskData> column, String status) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("task_popup.fxml"));
@@ -54,10 +61,10 @@ public class KanbanController {
             stage.setTitle("Create Task");
             stage.setScene(new Scene(root));
 
-            // When task is created in popup, add it to the proper column
+            // When task is created, add it and grow ListView
             popup.setOnTaskCreated(task -> {
-                task.setStatus(status);   // ensure task gets the correct column status
-                column.getItems().add(task);
+                task.setStatus(status);
+                addTaskAndKeepHeight(column, task);
             });
 
             stage.show();
@@ -66,28 +73,7 @@ public class KanbanController {
         }
     }
 
-    // Create a task directly in a given column
-    /*private void createTask(ListView<TaskData> list, String defaultTitle, String status) {
-        TaskData newTask = new TaskData(
-                defaultTitle + " " + (list.getItems().size() + 1),
-                "Description...",
-                priority,
-                status
-        );
-        list.getItems().add(newTask);
-    }*/
-
-    // Add task to correct column based on status
-    private void addTaskToColumn(TaskData task) {
-        switch (task.getStatus()) {
-            case "TODO" -> toDoList.getItems().add(task);
-            case "IN_PROGRESS" -> inProgressList.getItems().add(task);
-            case "DONE" -> doneList.getItems().add(task);
-            default -> toDoList.getItems().add(task); // fallback
-        }
-    }
-
-    // Setup list view to display task cards and enable drag-and-drop
+    /* Setup ListView with task cells and drag-and-drop */
     private void setupListView(ListView<TaskData> listView) {
         listView.setCellFactory(lv -> {
             ListCell<TaskData> cell = new ListCell<>() {
@@ -111,16 +97,15 @@ public class KanbanController {
                     }
                 }
             };
-            // Call the unified method for the cell
             enableDragAndDrop(cell, listView);
             return cell;
         });
-        // Call the unified method for the ListView itself (to allow drops when empty)
+
         enableDragAndDrop(listView, listView);
     }
-    // Enable drag-and-drop for moving tasks between columns
-    private void enableDragAndDrop(Node node, ListView<TaskData> parentList) {
-        // If the node is a ListCell, handle drag detection for dragging out
+
+    /* Enable drag-and-drop for tasks */
+    private void enableDragAndDrop(javafx.scene.Node node, ListView<TaskData> parentList) {
         if (node instanceof ListCell<?> cell) {
             cell.setOnDragDetected(event -> {
                 if (cell.isEmpty()) return;
@@ -140,7 +125,6 @@ public class KanbanController {
             });
         }
 
-        // Handle drag-over for both ListCell and ListView
         node.setOnDragOver(event -> {
             if (event.getGestureSource() != parentList && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
@@ -148,7 +132,6 @@ public class KanbanController {
             event.consume();
         });
 
-        // Handle drop for both ListCell and ListView
         node.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             boolean success = false;
@@ -157,12 +140,11 @@ public class KanbanController {
                 String taskId = db.getString();
                 TaskData movedTask = findAndRemoveTask(taskId);
                 if (movedTask != null) {
-                    // Update status based on target list
                     if (parentList == toDoList) movedTask.setStatus("TODO");
                     else if (parentList == inProgressList) movedTask.setStatus("IN_PROGRESS");
                     else if (parentList == doneList) movedTask.setStatus("DONE");
 
-                    parentList.getItems().add(movedTask);
+                    addTaskAndKeepHeight(parentList, movedTask); // grow target list
                     success = true;
                 }
             }
@@ -172,8 +154,24 @@ public class KanbanController {
         });
     }
 
+    /* Add task and keep ListView height fixed */
+    private void addTaskAndKeepHeight(ListView<TaskData> listView, TaskData task) {
+        listView.getItems().add(task);
 
-    // Find a task by ID in all columns and remove it
+        double newHeight = LIST_START_HEIGHT + listView.getItems().size() * TASK_CELL_HEIGHT;
+        listView.setMinHeight(newHeight);
+        listView.setPrefHeight(newHeight);
+        listView.setMaxHeight(newHeight); // locks height so it won't shrink
+    }
+
+    /* Set initial height for empty list */
+    private void setInitialListHeight(ListView<TaskData> listView) {
+        listView.setMinHeight(LIST_START_HEIGHT);
+        listView.setPrefHeight(LIST_START_HEIGHT);
+        listView.setMaxHeight(Double.MAX_VALUE); // allow growth
+    }
+
+    /* Find a task by ID in all columns and remove it */
     private TaskData findAndRemoveTask(String id) {
         for (ListView<TaskData> list : List.of(toDoList, inProgressList, doneList)) {
             for (TaskData task : list.getItems()) {
@@ -185,4 +183,5 @@ public class KanbanController {
         }
         return null;
     }
+
 }
