@@ -1,0 +1,20 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.j4va.kair.TaskPopup">
+
+    <Label text="Create New Task" style="-fx-font-size: 18px;" />
+
+    <TextField fx:id="titleField" promptText="Task Title" />
+    <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="4"/>
+
+    <HBox spacing="10">
+        <Button text="Cancel" onAction="#onCancel"/>
+        <Button text="Create" onAction="#onCreate"/>
+    </HBox>
+</VBox>
