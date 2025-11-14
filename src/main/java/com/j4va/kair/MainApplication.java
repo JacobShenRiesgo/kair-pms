@@ -19,7 +19,7 @@ public class MainApplication extends Application {
         //Set original top bar to transparent
         stage.initStyle(StageStyle.TRANSPARENT);
         // appears when you launch the project
-        showLoginScreen();
+        showKanbanScreen();
         stage.setResizable(true);
         stage.setMinWidth(600);
         stage.setMinHeight(500);

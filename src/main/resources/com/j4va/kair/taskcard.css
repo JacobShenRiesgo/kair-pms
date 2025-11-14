@@ -3,4 +3,8 @@
     -fx-background-radius: 5;
     -fx-background-color: white;
     -fx-border-color: gray;
+    -fx-pref-width: 220;
+    -fx-pref-height: 50;
+    -fx-max-width: 220;
+    -fx-max-height: 50;
 }

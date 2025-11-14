@@ -1,20 +1,21 @@
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.j4va.kair.TaskPopup">
+<?xml version="1.0" encoding="UTF-8"?>
 
-    <Label text="Create New Task" style="-fx-font-size: 18px;" />
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.TaskPopup">
+
+    <Label style="-fx-font-size: 18px;" text="Create New Task" />
 
     <TextField fx:id="titleField" promptText="Task Title" />
-    <TextArea fx:id="descriptionField" promptText="Description" prefRowCount="4"/>
+    <TextArea fx:id="descriptionField" prefRowCount="4" promptText="Description" />
 
     <HBox spacing="10">
-        <Button text="Cancel" onAction="#onCancel"/>
-        <Button text="Create" onAction="#onCreate"/>
+        <Button onAction="#onCancel" text="Cancel" />
+        <Button onAction="#onCreate" text="Create" />
+      <VBox.margin>
+         <Insets bottom="2.0" />
+      </VBox.margin>
     </HBox>
 </VBox>

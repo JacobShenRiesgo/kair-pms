@@ -35,9 +35,9 @@ public class KanbanController {
         setupListView(doneList);
 
         // Buttons to create tasks in respective columns
-        toDoButton.setOnAction(e -> createTask(toDoList, "To Do Task", "TODO"));
-        inProgressButton.setOnAction(e -> createTask(inProgressList, "In Progress Task", "IN_PROGRESS"));
-        doneButton.setOnAction(e -> createTask(doneList, "Done Task", "DONE"));
+        //toDoButton.setOnAction(e -> createTask(toDoList, "To Do Task", "TODO"));
+        //inProgressButton.setOnAction(e -> createTask(inProgressList, "In Progress Task", "IN_PROGRESS"));
+        //doneButton.setOnAction(e -> createTask(doneList, "Done Task", "DONE"));
     }
 
     // Open popup to create a new task
