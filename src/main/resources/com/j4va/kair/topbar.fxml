@@ -5,8 +5,8 @@
 
 <HBox fx:id="topBar" xmlns:fx="http://javafx.com/fxml" stylesheets="@topbar.css"
       spacing="10" prefHeight="50">
-    <Label fx:id="titleLabel" text ="ϰ KAIR" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;" />
-    <Label fx:id="subtitleLabel" text="Project Management System" style="-fx-font-size: 14px; -fx-text-fill: white;" />
+    <Label fx:id="titleLabel" text ="ϰ KAIR"/>
+    <Label fx:id="subtitleLabel" text="Project Management System"/>
     <Region HBox.hgrow="ALWAYS" />
     <!-- Window control buttons -->
     <Label fx:id="minimizeBtn" text="—"/>

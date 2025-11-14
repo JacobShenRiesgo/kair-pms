@@ -7,9 +7,13 @@
 
 #titleLabel {
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-padding: 0 0 0 6;
+}
+#subtitleLabel {
+    -fx-font-size: 14px;
+    -fx-text-fill: white
 }
 
 #minimizeBtn, #maximizeBtn, #closeBtn {

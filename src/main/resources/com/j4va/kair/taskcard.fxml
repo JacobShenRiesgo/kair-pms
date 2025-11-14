@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <HBox fx:id="background" stylesheets="@taskcard.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.j4va.kair.TaskCardController">
    <children>
-      <VBox HBox.hgrow="ALWAYS">
+      <VBox alignment="TOP_LEFT">
          <children>
-            <Label fx:id="titleLabel" text="" />
-             <Label fx:id="priorityLabel" text="" />
+            <Label fx:id="titleLabel" text=" " />
+             <Label fx:id="priorityLabel" text="None">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
          </children>
       </VBox>
    </children>

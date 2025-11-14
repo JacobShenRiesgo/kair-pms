@@ -1,6 +1,7 @@
 package com.j4va.kair;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -11,7 +12,7 @@ public class TaskPopup {
 
     @FXML private TextField titleField;
     @FXML private TextArea descriptionField;
-
+    @FXML private ComboBox<String> priorityChoice;
     private Consumer<TaskData> callback;
 
     public TaskPopup() {
@@ -29,9 +30,9 @@ public class TaskPopup {
     private void onCreate() {
         String title = titleField.getText();
         String desc = descriptionField.getText();
-
-        TaskData task = new TaskData(title, desc, "TODO");
-
+        String priority = priorityChoice.getValue();
+        TaskData task = new TaskData(title, desc, priority, "TODO");
+        if (priority == null) priority = "None";
         if (callback != null) callback.accept(task);
 
         closePopup();

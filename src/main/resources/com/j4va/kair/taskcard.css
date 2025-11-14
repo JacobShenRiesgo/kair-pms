@@ -8,3 +8,10 @@
     -fx-max-width: 220;
     -fx-max-height: 50;
 }
+.vbox {
+    -fx-alignment: top-left;
+}
+.label{
+    -fx-text-alignment: left;
+    -fx-padding: 0 0 0 2;
+}
