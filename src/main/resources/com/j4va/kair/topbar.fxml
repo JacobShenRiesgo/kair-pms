@@ -3,13 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox fx:id="topBar" xmlns:fx="http://javafx.com/fxml" fx:controller="com.j4va.kair.TopBarController" stylesheets="@topbar.css"
+<HBox fx:id="topBar" xmlns:fx="http://javafx.com/fxml" stylesheets="@topbar.css"
       spacing="10" prefHeight="50">
     <Label fx:id="titleLabel" text ="ϰ KAIR"/>
     <Label fx:id="subtitleLabel" text="Project Management System"/>
     <Region HBox.hgrow="ALWAYS" />
-    <!-- Logout button -->
-    <Button fx:id="logoutBtn" text="Log Out" styleClass="logout-button"/>
     <!-- Window control buttons -->
     <Label fx:id="minimizeBtn" text="—"/>
     <Label fx:id="maximizeBtn" text="⬜"/>
