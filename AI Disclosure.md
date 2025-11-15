@@ -1,0 +1,1 @@
+This project was made with the guidance and correction of AI, specifically the built-in Github Copilot. It was only used for such and not for generative purposes. 
