@@ -5,6 +5,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
+import javafx.scene.control.PasswordField;
+
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -30,55 +36,120 @@ public class LoginController {
     private Button slackButton;
 
     @FXML
-    private void handleContinue() {
-        String email = emailField.getText();
-        boolean rememberMe = rememberMeCheckBox.isSelected();
+    private Label emailErrorLabel;
 
-        if (email != null && !email.trim().isEmpty()) {
-            // try to load user record from DB
-            User user = DatabaseService.getUserByEmail(email);
-            if (user != null) {
-                Session.setCurrentUser(user);
-                System.out.println("Login successful for: " + user.getEmail());
-                MainApplication.showMainScreen();
-            } else {
-                System.out.println("No such user in DB: " + email);
-                // optionally show dialog or create user automatically
-                MainApplication.showMainScreen(); // keep previous behavior if desired
-            }
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Label passwordErrorLabel;
+
+    @FXML
+    private void handleContinue(ActionEvent event) {
+        String email = emailField.getText().trim();
+        String password = passwordField.getText(); // Get password from the new PasswordField
+
+        // Check empty email
+        if (email.isEmpty()) {
+            emailErrorLabel.setText("Please enter your email.");
+            emailErrorLabel.setVisible(true);
+            return;
         } else {
-            System.out.println("Please enter an email address");
+            emailErrorLabel.setVisible(false);
+        }
+
+        // Check empty password
+        if (password.isEmpty()) {
+            passwordErrorLabel.setText("Please enter your password.");
+            passwordErrorLabel.setVisible(true);
+            return;
+        } else {
+            passwordErrorLabel.setVisible(false);
+        }
+
+        try {
+            // Check if email exists
+            if (!UserDAO.emailExists(email)) {
+                emailErrorLabel.setText("Account not found, please register!");
+                emailErrorLabel.setVisible(true);
+                return;
+            } else {
+                emailErrorLabel.setVisible(false);
+            }
+
+            // Check if password is correct for that email
+            if (!UserDAO.checkPassword(email, password)) {
+                passwordErrorLabel.setText("Incorrect password!");
+                passwordErrorLabel.setVisible(true);
+                return;
+            } else {
+                passwordErrorLabel.setVisible(false);
+            }
+
+            // Both email and password are valid, navigate to main screen
+            MainApplication.showMainScreen();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            emailErrorLabel.setText("Error connecting to database.");
+            emailErrorLabel.setVisible(true);
         }
     }
+
+
 
 
     @FXML
     private void handleGoogleLogin() {
         System.out.println("Google login clicked");
-        MainApplication.showMainScreen();
+        // navigate to main screen
+        try {
+            MainApplication.showMainScreen();
+        } catch (Exception e) {
+            System.err.println("Error loading main screen: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleMicrosoftLogin() {
         System.out.println("Microsoft login clicked");
-        MainApplication.showMainScreen();
+        // navigate to main screen
+        try {
+            MainApplication.showMainScreen();
+        } catch (Exception e) {
+            System.err.println("Error loading main screen: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleAppleLogin() {
         System.out.println("Apple login clicked");
-        MainApplication.showMainScreen();
+        // navigate
+        try {
+            MainApplication.showMainScreen();
+        } catch (Exception e) {
+            System.err.println("Error loading main screen: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleSlackLogin() {
         System.out.println("Slack login clicked");
-        MainApplication.showMainScreen();
+        // navigate
+        try {
+            MainApplication.showMainScreen();
+        } catch (Exception e) {
+            System.err.println("Error loading main screen: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleCreateAccount(MouseEvent event) {
         System.out.println("Create account clicked");
-        MainApplication.showSignupScreen();
+        try {
+            MainApplication.showSignupScreen();
+        } catch (Exception e) {
+            System.err.println("Error loading signup screen: " + e.getMessage());
+        }
     }
 }

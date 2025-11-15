@@ -1,75 +1,76 @@
 package com.j4va.kair;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ResourceBundle;
 
-public class CreateProjectController {
-
-    @FXML private TextField nameField;
-    @FXML private ComboBox<User> assigneeBox;
-    @FXML private ComboBox<String> statusBox;
-    @FXML private DatePicker dueDatePicker;
+public class CreateProjectController implements Initializable {
 
     @FXML
-    public void initialize() {
-        // load users from DB
-        List<User> users = DatabaseService.getUsers();
-        assigneeBox.getItems().addAll(users);
+    private TextField projectNameField;
 
-        // default choices for status
-        statusBox.getItems().addAll("To Do", "Ongoing", "Done");
+    @FXML
+    private DatePicker startDatePicker, endDatePicker;
 
-        // If a user is logged in, preselect them
-        User cur = Session.getCurrentUser();
-        if (cur != null) {
-            for (User u : users) {
-                if (u.getId() == cur.getId()) {
-                    assigneeBox.setValue(u);
-                    break;
-                }
-            }
-        }
+    @FXML
+    private ComboBox<String> statusCombo;
 
-        // default due date = +7 days
-        dueDatePicker.setValue(LocalDate.now().plusDays(7));
+    @FXML
+    private Button createButton;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Populate ComboBox here instead of FXML
+        statusCombo.getItems().addAll("Active", "Pending", "Completed");
     }
 
     @FXML
-    private void handleCreate() {
-        String name = nameField.getText();
-        if (name == null || name.isBlank()) {
-            System.err.println("Project name is required");
+    private void createProject() {
+        String name = projectNameField.getText();
+        String start = startDatePicker.getValue() != null ? startDatePicker.getValue().toString() : null;
+        String end = endDatePicker.getValue() != null ? endDatePicker.getValue().toString() : null;
+        String status = statusCombo.getValue();
+
+        if (name == null || name.isEmpty() || start == null || end == null || status == null) {
+            showAlert("Please fill in all fields.");
             return;
         }
 
-        User assignee = assigneeBox.getValue();
-        String status = statusBox.getValue() != null ? statusBox.getValue() : "To Do";
-        LocalDate start = LocalDate.now();
-        LocalDate end = dueDatePicker.getValue();
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO project (name, start_date, end_date, status) VALUES (?, ?, ?, ?)"
+            );
+            ps.setString(1, name);
+            ps.setString(2, start);
+            ps.setString(3, end);
+            ps.setString(4, status);
+            ps.executeUpdate();
 
-        int projectId = DatabaseService.insertProject(name, start, end, status);
-        if (projectId <= 0) {
-            System.err.println("Failed to create project");
-            return;
+            showAlert("Project created successfully!");
+            closeWindow();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error creating project.");
         }
-
-        if (assignee != null) {
-            DatabaseService.assignUserToProject(projectId, assignee.getId());
-        }
-
-        DatabaseService.insertProjectStatus(projectId, status);
-
-        // return to project list screen
-        MainApplication.showProjectListScreen();
     }
 
     @FXML
-    private void handleBack() {
-        MainApplication.showProjectListScreen();
+    private void closeWindow() {
+        Stage stage = (Stage) createButton.getScene().getWindow();
+        stage.close();
+    }
+
+    private void showAlert(String msg) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

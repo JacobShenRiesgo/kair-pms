@@ -1,210 +1,275 @@
 package com.j4va.kair;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Button;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.util.Callback;
+import com.j4va.kair.TaskData;
+import com.j4va.kair.TaskCardController;
+import com.j4va.kair.DatabaseConnection;
+import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javafx.scene.Node;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
+
+import java.sql.*;
+import java.time.LocalDate;
 
 public class KanbanController {
 
-    @FXML private HBox topBar;
-    @FXML private ListView<TaskData> toDoList;
-    @FXML private ListView<TaskData> inProgressList;
-    @FXML private ListView<TaskData> doneList;
-
-    @FXML private Button toDoButton;
-    @FXML private Button inProgressButton;
-    @FXML private Button doneButton;
-
-    // Heights for dynamic resizing
-    private static final double LIST_START_HEIGHT = 250; // empty list height
-    private static final double TASK_CELL_HEIGHT = 40;  // match your task card height
-
-    // Current project being displayed
-    private Project currentProject;
+    @FXML
+    private ListView<TaskData> toDoList;
+    @FXML
+    private ListView<TaskData> inProgressList;
+    @FXML
+    private ListView<TaskData> doneList;
 
     @FXML
-    private void initialize() {
-        setupListView(toDoList);
-        setupListView(inProgressList);
-        setupListView(doneList);
+    private VBox todoColumn;
 
-        // Buttons to create tasks in respective columns
-        toDoButton.setOnAction(e -> openCreateTaskPopup(toDoList, "TODO"));
-        inProgressButton.setOnAction(e -> openCreateTaskPopup(inProgressList, "IN_PROGRESS"));
-        doneButton.setOnAction(e -> openCreateTaskPopup(doneList, "DONE"));
+    @FXML
+    private VBox doingColumn;
 
-        // Initialize the ListViews with start height
-        setInitialListHeight(toDoList);
-        setInitialListHeight(inProgressList);
-        setInitialListHeight(doneList);
+    @FXML
+    private VBox doneColumn;
+
+    @FXML
+    private Button toDoButton, inProgressButton, doneButton;
+
+    private int projectId;
+    private Connection conn;
+
+    private ObservableList<TaskData> toDoTasks = FXCollections.observableArrayList();
+    private ObservableList<TaskData> inProgressTasks = FXCollections.observableArrayList();
+    private ObservableList<TaskData> doneTasks = FXCollections.observableArrayList();
+
+    public void setProject(int projectId, String projectName) {
+        this.projectId = projectId;
+        connectDatabase();
+        loadTasksFromDatabase();
+        setupListViews();
+        setupAddButtons();
     }
 
-    /* Open popup to create a new task */
-    private void openCreateTaskPopup(ListView<TaskData> column, String status) {
+    private void connectDatabase() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("task_popup.fxml"));
-            Parent root = loader.load();
-            TaskPopup popup = loader.getController();
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Create Task");
-            stage.setScene(new Scene(root));
-
-            // When task is created, add it and grow ListView
-            popup.setOnTaskCreated(task -> {
-                task.setStatus(status);
-                addTaskAndKeepHeight(column, task);
-            });
-
-            stage.show();
-        } catch (IOException e) {
-            System.err.println("Failed to load task popup: " + e.getMessage());
+            conn = DatabaseConnection.getConnection(); // assign to class field
+            System.out.println("Database connected successfully!");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    /* Setup ListView with task cells and drag-and-drop */
-    private void setupListView(ListView<TaskData> listView) {
-        listView.setCellFactory(lv -> {
-            ListCell<TaskData> cell = new ListCell<>() {
-                @Override
-                protected void updateItem(TaskData task, boolean empty) {
-                    super.updateItem(task, empty);
-                    if (empty || task == null) {
-                        setGraphic(null);
-                        setText(null);
-                    } else {
-                        try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
-                            HBox taskCard = loader.load();
-                            TaskCardController controller = loader.getController();
-                            controller.setData(task);
-                            setGraphic(taskCard);
-                            setText(null);
-                        } catch (IOException e) {
-                            System.err.println("Failed to load task card: " + e.getMessage());
-                        }
-                    }
+    private void loadTasksFromDatabase() {
+        try {
+            String sql = "SELECT * FROM task WHERE project_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, projectId);
+            ResultSet rs = stmt.executeQuery();
+
+            toDoTasks.clear();
+            inProgressTasks.clear();
+            doneTasks.clear();
+
+            while (rs.next()) {
+                TaskData task = new TaskData(
+                        rs.getString("name"),
+                        rs.getString("description1"),
+                        rs.getString("priority"),
+                        rs.getString("status")
+                );
+
+                switch (task.getStatus()) {
+                    case "To Do" -> toDoTasks.add(task);
+                    case "In Progress" -> inProgressTasks.add(task);
+                    case "Done" -> doneTasks.add(task);
                 }
-            };
-            enableDragAndDrop(cell, listView);
-            return cell;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupListViews() {
+        toDoList.setItems(toDoTasks);
+        inProgressList.setItems(inProgressTasks);
+        doneList.setItems(doneTasks);
+
+        setupDragAndDrop(toDoList);
+        setupDragAndDrop(inProgressList);
+        setupDragAndDrop(doneList);
+
+        // Show title in ListView
+        Callback<ListView<TaskData>, ListCell<TaskData>> cellFactory = lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(TaskData item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getTitle() + " (" + item.getPriority() + ")");
+            }
+        };
+
+        toDoList.setCellFactory(cellFactory);
+        inProgressList.setCellFactory(cellFactory);
+        doneList.setCellFactory(cellFactory);
+    }
+
+    private void setupDragAndDrop(ListView<TaskData> listView) {
+        listView.setOnDragDetected(event -> {
+            TaskData selected = listView.getSelectionModel().getSelectedItem();
+            if (selected == null) return;
+
+            Dragboard db = listView.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(selected.getId());
+            db.setContent(content);
+            event.consume();
         });
 
-        enableDragAndDrop(listView, listView);
-    }
-
-    /* Enable drag-and-drop for tasks */
-    private void enableDragAndDrop(javafx.scene.Node node, ListView<TaskData> parentList) {
-        if (node instanceof ListCell<?> cell) {
-            cell.setOnDragDetected(event -> {
-                if (cell.isEmpty()) return;
-
-                Dragboard db = cell.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(((TaskData) cell.getItem()).getId());
-                db.setContent(content);
-
-                cell.setOpacity(0.5);
-                event.consume();
-            });
-
-            cell.setOnDragDone(event -> {
-                cell.setOpacity(1);
-                event.consume();
-            });
-        }
-
-        node.setOnDragOver(event -> {
-            if (event.getGestureSource() != parentList && event.getDragboard().hasString()) {
+        listView.setOnDragOver(event -> {
+            if (event.getGestureSource() != listView && event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
         });
 
-        node.setOnDragDropped(event -> {
+        listView.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
-            boolean success = false;
-
             if (db.hasString()) {
-                String taskId = db.getString();
-                TaskData movedTask = findAndRemoveTask(taskId);
-                if (movedTask != null) {
-                    if (parentList == toDoList) movedTask.setStatus("TODO");
-                    else if (parentList == inProgressList) movedTask.setStatus("IN_PROGRESS");
-                    else if (parentList == doneList) movedTask.setStatus("DONE");
+                TaskData task = findTaskById(db.getString());
+                if (task != null) {
+                    String newStatus = getStatusForList(listView);
 
-                    addTaskAndKeepHeight(parentList, movedTask); // grow target list
-                    success = true;
+                    removeTaskFromLists(task);
+                    task.setStatus(newStatus);
+                    listView.getItems().add(task);
+                    updateTaskStatusInDatabase(task);
+
+                    event.setDropCompleted(true);
                 }
             }
-
-            event.setDropCompleted(success);
             event.consume();
         });
     }
 
-    /* Add task and keep ListView height fixed */
-    private void addTaskAndKeepHeight(ListView<TaskData> listView, TaskData task) {
-        listView.getItems().add(task);
-
-        double newHeight = LIST_START_HEIGHT + listView.getItems().size() * TASK_CELL_HEIGHT;
-        listView.setMinHeight(newHeight);
-        listView.setPrefHeight(newHeight);
-        listView.setMaxHeight(newHeight); // locks height so it won't shrink
-    }
-
-    /* Set initial height for empty list */
-    private void setInitialListHeight(ListView<TaskData> listView) {
-        listView.setMinHeight(LIST_START_HEIGHT);
-        listView.setPrefHeight(LIST_START_HEIGHT);
-        listView.setMaxHeight(Double.MAX_VALUE); // allow growth
-    }
-
-    /* Find a task by ID in all columns and remove it */
-    private TaskData findAndRemoveTask(String id) {
-        for (ListView<TaskData> list : List.of(toDoList, inProgressList, doneList)) {
-            for (TaskData task : list.getItems()) {
-                if (task.getId().equals(id)) {
-                    list.getItems().remove(task);
-                    return task;
-                }
-            }
-        }
+    private TaskData findTaskById(String id) {
+        for (TaskData t : toDoTasks) if (t.getId().equals(id)) return t;
+        for (TaskData t : inProgressTasks) if (t.getId().equals(id)) return t;
+        for (TaskData t : doneTasks) if (t.getId().equals(id)) return t;
         return null;
     }
 
-
-    /**
-     * Loads a project into the Kanban view.
-     * This method stores the project reference and could be extended
-     * to load existing tasks from a database.
-     */
-    public void loadProject(Project project) {
-        this.currentProject = project;
-
-        // Clear existing tasks
-        toDoList.getItems().clear();
-        inProgressList.getItems().clear();
-        doneList.getItems().clear();
-
-        // Reset list heights
-        setInitialListHeight(toDoList);
-        setInitialListHeight(inProgressList);
-        setInitialListHeight(doneList);
+    private void removeTaskFromLists(TaskData task) {
+        toDoTasks.remove(task);
+        inProgressTasks.remove(task);
+        doneTasks.remove(task);
     }
+
+    private String getStatusForList(ListView<TaskData> listView) {
+        if (listView == toDoList) return "To Do";
+        if (listView == inProgressList) return "In Progress";
+        return "Done";
+    }
+
+    private void updateTaskStatusInDatabase(TaskData task) {
+        try {
+            String sql = "UPDATE tasks SET status = ? WHERE id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, task.getStatus());
+            stmt.setString(2, task.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setupAddButtons() {
+        toDoButton.setOnAction(e -> openCreateTaskPopup("To Do"));
+        inProgressButton.setOnAction(e -> openCreateTaskPopup("In Progress"));
+        doneButton.setOnAction(e -> openCreateTaskPopup("Done"));
+    }
+
+    private void openCreateTaskPopup(String status) {
+        // Example: just add a new task; you can replace this with a real popup
+        TaskData newTask = new TaskData("New Task", "Description", "Medium", status);
+
+        try {
+            String sql = "INSERT INTO task (id, name, description1, priority, status, project_id) VALUES (?,?,?,?,?,?)";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, newTask.getId());
+            stmt.setString(2, newTask.getTitle());
+            stmt.setString(3, newTask.getDescription());
+            stmt.setString(4, newTask.getPriority());
+            stmt.setString(5, newTask.getStatus());
+            stmt.setInt(6, projectId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Add to the correct list
+        switch (status) {
+            case "To Do" -> toDoTasks.add(newTask);
+            case "In Progress" -> inProgressTasks.add(newTask);
+            case "Done" -> doneTasks.add(newTask);
+        }
+    }
+
+    public void openCreateTaskPopup() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/j4va/kair/taskcard.fxml"));
+            HBox taskRoot = loader.load();
+
+            // Get the controller to set any necessary data
+            TaskCardController controller = loader.getController();
+            controller.setKanbanController(this); // Optional: to call addTaskFromPopup()
+
+            Stage popupStage = new Stage();
+            popupStage.setTitle("Create New Task");
+            popupStage.setScene(new Scene(taskRoot));
+            popupStage.initModality(Modality.APPLICATION_MODAL); // blocks parent window
+            popupStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addTaskFromPopup(String title, String priority) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskcard.fxml"));
+            Node taskCardNode = loader.load(); // ← THIS is the node
+
+            TaskCardController controller = loader.getController();
+            controller.setKanbanController(this);
+            controller.setData(title, priority);
+
+            // add card to the first column (To Do)
+            addTaskCardToColumn(taskCardNode);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void addTaskCardToColumn(Node taskCard) {
+        // Example: add new task to TODO column (VBox)
+        todoColumn.getChildren().add(taskCard);
+    }
+
 
 }
