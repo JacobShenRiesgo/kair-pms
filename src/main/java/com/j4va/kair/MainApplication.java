@@ -2,6 +2,7 @@ package com.j4va.kair;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -50,11 +51,32 @@ public class MainApplication extends Application {
             rootLayout.setCenter(view);
 
             // Reinitialize topbar (if screen contains #topBar)
-            TopBar.initializeTopBar(view.lookup("#topBar"));
+            Node topBar = view.lookup("#topBar");
+            if (topBar != null) {
+                TopBar.initializeTopBar(topBar);
+
+                // Control logout button visibility based on screen type
+                if (isAuthenticatedScreen(fxml)) {
+                    TopBar.showLogoutButton(topBar);
+                } else {
+                    TopBar.hideLogoutButton(topBar);
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Determines if a screen requires authentication and should show the logout button.
+     */
+    private static boolean isAuthenticatedScreen(String fxml) {
+        // Define which screens should show the logout button
+        return fxml.equals("main.fxml") ||
+               fxml.equals("kanban.fxml") ||
+               fxml.equals("projectlist.fxml") ||
+               fxml.equals("create_project.fxml");
     }
 
     /* ---------------------------------------------------------
@@ -98,7 +120,12 @@ public class MainApplication extends Application {
             controller.setUserEmail(email);
 
             rootLayout.setCenter(view);
-            TopBar.initializeTopBar(view.lookup("#topBar"));
+            Node topBar = view.lookup("#topBar");
+            if (topBar != null) {
+                TopBar.initializeTopBar(topBar);
+                // Password screen is not authenticated, so hide logout button
+                TopBar.hideLogoutButton(topBar);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

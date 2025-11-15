@@ -157,6 +157,32 @@ public class TopBar{
             enableWindowResizing(stage);
         });
     }
+
+    /**
+     * Shows the logout button for authenticated screens.
+     */
+    public static void showLogoutButton(Node topBar) {
+        if (topBar != null) {
+            Node logoutBtn = topBar.lookup("#logoutBtn");
+            if (logoutBtn != null) {
+                logoutBtn.setVisible(true);
+                logoutBtn.setManaged(true);
+            }
+        }
+    }
+
+    /**
+     * Hides the logout button for unauthenticated screens.
+     */
+    public static void hideLogoutButton(Node topBar) {
+        if (topBar != null) {
+            Node logoutBtn = topBar.lookup("#logoutBtn");
+            if (logoutBtn != null) {
+                logoutBtn.setVisible(false);
+                logoutBtn.setManaged(false);
+            }
+        }
+    }
 }
 
 

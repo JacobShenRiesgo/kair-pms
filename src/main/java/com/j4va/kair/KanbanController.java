@@ -32,6 +32,9 @@ public class KanbanController {
     private static final double LIST_START_HEIGHT = 250; // empty list height
     private static final double TASK_CELL_HEIGHT = 40;  // match your task card height
 
+    // Current project being displayed
+    private Project currentProject;
+
     @FXML
     private void initialize() {
         setupListView(toDoList);
@@ -182,6 +185,26 @@ public class KanbanController {
             }
         }
         return null;
+    }
+
+
+    /**
+     * Loads a project into the Kanban view.
+     * This method stores the project reference and could be extended
+     * to load existing tasks from a database.
+     */
+    public void loadProject(Project project) {
+        this.currentProject = project;
+
+        // Clear existing tasks
+        toDoList.getItems().clear();
+        inProgressList.getItems().clear();
+        doneList.getItems().clear();
+
+        // Reset list heights
+        setInitialListHeight(toDoList);
+        setInitialListHeight(inProgressList);
+        setInitialListHeight(doneList);
     }
 
 }

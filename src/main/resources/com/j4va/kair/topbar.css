@@ -36,3 +36,26 @@
 #closeBtn:hover {
     -fx-background-color: rgb(255, 60, 60);
 }
+
+/* Logout button styling */
+.logout-button {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 4 12;
+    -fx-cursor: hand;
+    -fx-margin: 0 10 0 0;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-border-color: rgba(255, 255, 255, 0.5);
+}
+
+.logout-button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
